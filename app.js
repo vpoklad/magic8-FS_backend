@@ -4,6 +4,9 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { HttpCode, LIMIT_JSON } from './lib/constants';
 
+// import transactionsRouter from './routes/api/transactions';
+import authRouter from './routes/auth';
+
 const app = express();
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
@@ -14,15 +17,17 @@ app.use(express.json({ limit: LIMIT_JSON }));
 
 //Routes
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-//end test route
+app.use('/api/users', authRouter);
+// app.use('/api/transactions', transactionsRouter);
 
 app.use((req, res) => {
   res
     .status(HttpCode.NOT_FOUND)
-    .json({ status: 'error', code: HttpCode.NOT_FOUND, message: 'Not found' });
+    .json({
+      status: 'error',
+      code: HttpCode.NOT_FOUND,
+      message: 'Not found rout',
+    });
 });
 
 app.use((err, req, res, next) => {
