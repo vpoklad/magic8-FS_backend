@@ -1,5 +1,6 @@
 import mongooseService from 'mongoose';
 import bcrypt from 'bcryptjs';
+import { randomUUID } from 'crypto';
 
 const { Schema, model, SchemaTypes } = mongooseService;
 
@@ -9,21 +10,34 @@ const userSchema = new Schema(
       type: String,
       default: 'Guest',
     },
-    password: {
-      type: String,
-    },
     email: {
       type: String,
-      required: [true, 'Email is required'],
+      required: [true, 'Set email for user!'],
       unique: true,
+      validate(value) {
+        const symbols = /\S+@\S+\.\S+/;
+        return symbols.test(String(value).trim().toLowerCase());
+      },
+    },
+    password: {
+      type: String,
     },
     token: {
       type: String,
       default: null,
     },
-    owner: {
-      type: SchemaTypes.ObjectId,
-      ref: 'user',
+    // owner: {
+    //   type: SchemaTypes.ObjectId,
+    //   ref: 'user',
+    // },
+    isVerify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      default: randomUUID,
+      required: [true, 'Verify token is required!'],
     },
   },
   {
@@ -40,7 +54,7 @@ const userSchema = new Schema(
   },
 );
 userSchema.pre('save', async function (next) {
-  if (this.isModified) {
+  if (this.isModified('password')) {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
   }
