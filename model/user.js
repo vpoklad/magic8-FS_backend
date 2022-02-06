@@ -23,12 +23,8 @@ const userSchema = new Schema(
       type: String,
     },
     balance: {
-      type: String,
-      default: null,
-      validate(value) {
-        const symbols = /\d+.\+d{2}/;
-        return symbols.test(String(value).trim()); //дописать проверку на цифры
-      },
+      type: Number,
+      default: 0.0,
     },
     token: {
       type: String,
