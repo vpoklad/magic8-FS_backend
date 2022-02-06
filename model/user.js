@@ -2,7 +2,7 @@ import mongooseService from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { randomUUID } from 'crypto';
 
-const { Schema, model, SchemaTypes } = mongooseService;
+const { Schema, model } = mongooseService;
 
 const userSchema = new Schema(
   {
@@ -22,14 +22,18 @@ const userSchema = new Schema(
     password: {
       type: String,
     },
+    balance: {
+      type: String,
+      default: null,
+      validate(value) {
+        const symbols = /\d+.\+d{2}/;
+        return symbols.test(String(value).trim()); //дописать проверку на цифры
+      },
+    },
     token: {
       type: String,
       default: null,
     },
-    // owner: {
-    //   type: SchemaTypes.ObjectId,
-    //   ref: 'user',
-    // },
     isVerify: {
       type: Boolean,
       default: false,
