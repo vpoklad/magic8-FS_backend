@@ -1,58 +1,58 @@
-import repositoryTransactions from "../../repository/transactions";
-import { HttpCode } from "../../lib/constants";
+import repositoryTransactions from '../../repository/transactions';
+import { HttpCode } from '../../lib/constants';
 
 const getTransactions = async (req, res, next) => {
   const { id: userId } = req.user;
   const transactions = await repositoryTransactions.transactionsList(
     userId,
-    req.query
+    req.query,
   );
   if (!transactions) {
     res.status(HttpCode.NOT_FOUND).json({
-      status: "error",
+      status: 'error',
       code: HttpCode.NOT_FOUND,
-      message: "Not found transactions",
+      message: 'Not found transactions',
     });
   }
   res
     .status(HttpCode.OK)
-    .json({ status: "success", code: HttpCode.OK, data: transactions });
+    .json({ status: 'success', code: HttpCode.OK, data: transactions });
 };
 
-const getTransactionById = async (req, res, next) => {
-  const { id } = req.params;
-  const { id: userId } = req.user;
-  const transaction = await repositoryTransactions.getTransactionById(
-    userId,
-    id
-  );
-  if (!transaction) {
-    res.status(HttpCode.NOT_FOUND).json({
-      status: "error",
-      code: HttpCode.NOT_FOUND,
-      message: "Not found",
-    });
-  }
-  res
-    .status(200)
-    .json({ status: "success", code: HttpCode.OK, data: { transaction } });
-};
+// const getTransactionById = async (req, res, next) => {
+//   const { id } = req.params;
+//   const { id: userId } = req.user;
+//   const transaction = await repositoryTransactions.getTransactionById(
+//     userId,
+//     id
+//   );
+//   if (!transaction) {
+//     res.status(HttpCode.NOT_FOUND).json({
+//       status: "error",
+//       code: HttpCode.NOT_FOUND,
+//       message: "Not found",
+//     });
+//   }
+//   res
+//     .status(200)
+//     .json({ status: "success", code: HttpCode.OK, data: { transaction } });
+// };
 
 const createTransaction = async (req, res, next) => {
   const { id: userId } = req.user;
   const newTransaction = await repositoryTransactions.addTransaction(
     userId,
-    req.body
+    req.body,
   );
   if (newTransaction === null) {
     return res.status(HttpCode.BAD_REQUEST).json({
-      status: "error",
+      status: 'error',
       code: HttpCode.BAD_REQUEST,
-      message: "missing required name field",
+      message: 'missing required name field',
     });
   }
   res.status(HttpCode.CREATED).json({
-    status: "success",
+    status: 'success',
     code: HttpCode.OK,
     data: { transaction: newTransaction },
   });
@@ -63,47 +63,47 @@ const removeTransaction = async (req, res, next) => {
   const { id: userId } = req.user;
   const transactions = await repositoryTransactions.removeTransaction(
     userId,
-    id
+    id,
   );
   if (transactions === null) {
     return res.status(HttpCode.NOT_FOUND).json({
-      status: "error",
+      status: 'error',
       code: HttpCode.NOT_FOUND,
-      message: "Not found",
+      message: 'Not found',
     });
   }
 
   res.status(HttpCode.OK).json({
-    status: "success",
+    status: 'success',
     code: HttpCode.OK,
-    message: "transaction deleted",
+    message: 'transaction deleted',
   });
 };
 
-const updateTransaction = async (req, res, next) => {
-  const { id } = req.params;
-  const { id: userId } = req.user;
-  const transaction = await repositoryTransactions.updateTransaction(
-    userId,
-    id,
-    req.body
-  );
-  if (!transaction) {
-    return res.status(HttpCode.NOT_FOUND).json({
-      status: "error",
-      code: HttpCode.NOT_FOUND,
-      message: "Not found",
-    });
-  }
-  return res
-    .status(HttpCode.OK)
-    .json({ status: "success", code: HttpCode.OK, data: { transaction } });
-};
+// const updateTransaction = async (req, res, next) => {
+//   const { id } = req.params;
+//   const { id: userId } = req.user;
+//   const transaction = await repositoryTransactions.updateTransaction(
+//     userId,
+//     id,
+//     req.body
+//   );
+//   if (!transaction) {
+//     return res.status(HttpCode.NOT_FOUND).json({
+//       status: "error",
+//       code: HttpCode.NOT_FOUND,
+//       message: "Not found",
+//     });
+//   }
+//   return res
+//     .status(HttpCode.OK)
+//     .json({ status: "success", code: HttpCode.OK, data: { transaction } });
+// };
 
 export {
   getTransactions,
-  getTransactionById,
+  // getTransactionById,
   createTransaction,
   removeTransaction,
-  updateTransaction,
+  // updateTransaction,
 };

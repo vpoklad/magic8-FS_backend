@@ -1,14 +1,14 @@
-import Transaction from "../model/transaction";
+import Transaction from '../model/transaction';
 
 const transactionsList = async (
   userId,
-  { sortBy, sortByDesc, filter, limit = 10, skip = 0 }
+  { sortBy, sortByDesc, filter, limit = 10, skip = 0 },
 ) => {
   let sortCriteria = null;
   const total = await Transaction.find({ owner: userId }).countDocuments();
   let transactions = Transaction.find({ owner: userId }).populate({
-    path: "owner",
-    select: "name email role",
+    path: 'owner',
+    select: 'name email role',
   });
   if (sortBy) {
     sortCriteria = { [`${sortBy}`]: 1 };
@@ -17,7 +17,7 @@ const transactionsList = async (
     sortCriteria = { [`${sortByDesc}`]: -1 };
   }
   if (filter) {
-    transactions = transactions.select(filter.split("|").join(" "));
+    transactions = transactions.select(filter.split('|').join(' '));
   }
   transactions = await transactions
     .skip(Number(skip))
@@ -26,16 +26,16 @@ const transactionsList = async (
   return { total, transactions };
 };
 
-const getTransactionById = async (userId, transactionId) => {
-  const transaction = await Transaction.findOne({
-    _id: transactionId,
-    owner: userId,
-  }).populate({
-    path: "owner",
-    select: "name email role",
-  });
-  return transaction;
-};
+// const getTransactionById = async (userId, transactionId) => {
+//   const transaction = await Transaction.findOne({
+//     _id: transactionId,
+//     owner: userId,
+//   }).populate({
+//     path: "owner",
+//     select: "name email role",
+//   });
+//   return transaction;
+// };
 
 const removeTransaction = async (userId, transactionId) => {
   const transaction = await Transaction.findOneAndRemove({
@@ -50,19 +50,19 @@ const addTransaction = async (userId, body) => {
   return transaction;
 };
 
-const updateTransaction = async (userId, transactionId, body) => {
-  const transaction = await Transaction.findOneAndUpdate(
-    { _id: transactionId, owner: userId },
-    { ...body },
-    { new: true }
-  );
-  return transaction;
-};
+// const updateTransaction = async (userId, transactionId, body) => {
+//   const transaction = await Transaction.findOneAndUpdate(
+//     { _id: transactionId, owner: userId },
+//     { ...body },
+//     { new: true }
+//   );
+//   return transaction;
+// };
 
 export default {
   transactionsList,
-  getTransactionById,
+  // getTransactionById,
   removeTransaction,
   addTransaction,
-  updateTransaction,
+  // updateTransaction,
 };
