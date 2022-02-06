@@ -1,6 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { HttpCode } from '../../lib/constants';
 import authService from '../../services/auth/index';
+import axios from 'axios';
+import queryString from 'query-string';
+
 // import {
 //   UploadFileService,
 //   CloudFileStorage,
@@ -62,6 +65,23 @@ const login = async (req, res, _next) => {
   res
     .status(HttpCode.OK)
     .json({ status: 'success', code: HttpCode.OK, data: { token, email } });
+};
+
+const googleAuth = async (req, res) => {
+  const stringifiedParams = queryString.stringify({
+    client_id: process.env.GOOGLE_CLIENT_ID,
+    redirect_uri: `${process.env.BASE_URL}/auth/google-redirect`,
+    scope: [
+      'https://www.googleapis.com/auth/userinfo.email',
+      'https://www.googleapis.com/auth/userinfo.profile',
+    ].join(' '),
+    response_type: 'code',
+    access_type: 'offline',
+    prompt: 'consent',
+  });
+  return res.redirect(
+    `https://accounts.google.com/o/oauth2/v2/auth?${stringifiedParams}`,
+  );
 };
 
 const logout = async (req, res, _next) => {
@@ -150,6 +170,7 @@ export {
   login,
   logout,
   getCurrent,
+  googleAuth,
   // uploadAvatar,
   repeatEmailForVerifyUser,
   verifyUser,

@@ -16,6 +16,8 @@ import { guard } from '../../middlewares/guard';
 const authRouter = new Router();
 
 authRouter.post('/registration', addAuthValidation, registration);
+authRouter.get('/google', googleAuth);
+authRouter.get('/google-redirect', googleRedirect);
 authRouter.post('/login', addAuthValidation, login);
 authRouter.post('/logout', guard, logout);
 authRouter.get('/current', guard, getCurrent);
