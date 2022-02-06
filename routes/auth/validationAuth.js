@@ -2,7 +2,7 @@ import Joi from 'joi';
 import { HttpCode } from '../../lib/constants';
 
 const addAuthSchema = Joi.object({
-  name: Joi.string().optional(),
+  // name: Joi.string().optional(),
   email: Joi.string().required(),
   password: Joi.string().optional(),
 });

@@ -80,6 +80,32 @@ const getCurrent = (req, res, _next) => {
   });
 };
 
+const updateBalance = async (req, res, next) => {
+  const { id: userId } = req.user;
+  const { balance } = req.body;
+  console.log(typeof balance);
+  if (!balance) {
+    return res.status(HttpCode.NOT_FOUND).json({
+      status: 'error',
+      code: HttpCode.NOT_FOUND,
+      message: `Missing field 'balance'`,
+    });
+  }
+  await authService.setBalance(userId, balance);
+
+  // if (!result) {
+  //   return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({
+  //     status: 'error',
+  //     code: HttpCode.INTERNAL_SERVER_ERROR,
+  //     message: 'Not found balance',
+  //   });
+  // }
+  const userBalance = await authService.getBalance(userId);
+  return res
+    .status(HttpCode.OK)
+    .json({ status: 'success', code: HttpCode.OK, data: { userBalance } });
+};
+
 // const uploadAvatar = async (req, res, _next) => {
 //   const uploadService = new UploadFileService(
 //     LocalFileStorage,
@@ -150,6 +176,7 @@ export {
   login,
   logout,
   getCurrent,
+  updateBalance,
   // uploadAvatar,
   repeatEmailForVerifyUser,
   verifyUser,
