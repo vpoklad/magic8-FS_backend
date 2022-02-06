@@ -53,7 +53,7 @@ const login = async (req, res, _next) => {
   if (!user) {
     return res.status(HttpCode.UNAUTHORIZED).json({
       status: 'error',
-      code: HttpCode.CONFLICT,
+      code: HttpCode.UNAUTHORIZED,
       message: 'Invalid credentials',
     });
   }
@@ -61,22 +61,22 @@ const login = async (req, res, _next) => {
   await authService.setToken(user.id, token);
   res
     .status(HttpCode.OK)
-    .json({ status: 'success', code: HttpCode.OK, data: { token } });
+    .json({ status: 'success', code: HttpCode.OK, data: { token, email } });
 };
 
 const logout = async (req, res, _next) => {
   await authService.setToken(req.user.id, null);
   res
     .status(HttpCode.NO_CONTENT)
-    .json({ status: 'success', code: HttpCode.OK, data: {} });
+    .json({ status: 'success', code: HttpCode.NO_CONTENT, data: {} });
 };
 
 const getCurrent = (req, res, _next) => {
-  const { email, role } = req.user;
+  const { email, name } = req.user;
   res.status(HttpCode.OK).json({
     status: 'success',
     code: HttpCode.OK,
-    data: { email, role },
+    data: { email, name },
   });
 };
 
