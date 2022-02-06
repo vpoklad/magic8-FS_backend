@@ -2,7 +2,7 @@ import mongooseService from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { randomUUID } from 'crypto';
 
-const { Schema, model, SchemaTypes } = mongooseService;
+const { Schema, model } = mongooseService;
 
 const userSchema = new Schema(
   {
@@ -22,14 +22,14 @@ const userSchema = new Schema(
     password: {
       type: String,
     },
+    balance: {
+      type: Number,
+      default: 0.0,
+    },
     token: {
       type: String,
       default: null,
     },
-    // owner: {
-    //   type: SchemaTypes.ObjectId,
-    //   ref: 'user',
-    // },
     isVerify: {
       type: Boolean,
       default: false,

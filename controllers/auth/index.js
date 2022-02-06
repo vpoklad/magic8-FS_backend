@@ -62,9 +62,11 @@ const login = async (req, res, _next) => {
   }
   const token = authService.getToken(user);
   await authService.setToken(user.id, token);
-  res
-    .status(HttpCode.OK)
-    .json({ status: 'success', code: HttpCode.OK, data: { token, email } });
+  res.status(HttpCode.OK).json({
+    status: 'success',
+    code: HttpCode.OK,
+    data: { token, email, balance: user.balance },
+  });
 };
 
 const googleAuth = async (req, res) => {
@@ -98,6 +100,32 @@ const getCurrent = (req, res, _next) => {
     code: HttpCode.OK,
     data: { email, name },
   });
+};
+
+const updateBalance = async (req, res, next) => {
+  const { id: userId } = req.user;
+  const { balance } = req.body;
+  console.log(typeof balance);
+  if (!balance) {
+    return res.status(HttpCode.NOT_FOUND).json({
+      status: 'error',
+      code: HttpCode.NOT_FOUND,
+      message: `Missing field 'balance'`,
+    });
+  }
+  await authService.setBalance(userId, balance);
+
+  // if (!result) {
+  //   return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({
+  //     status: 'error',
+  //     code: HttpCode.INTERNAL_SERVER_ERROR,
+  //     message: 'Not found balance',
+  //   });
+  // }
+  const userBalance = await authService.getBalance(userId);
+  return res
+    .status(HttpCode.OK)
+    .json({ status: 'success', code: HttpCode.OK, data: { userBalance } });
 };
 
 // const uploadAvatar = async (req, res, _next) => {
@@ -171,6 +199,7 @@ export {
   logout,
   getCurrent,
   googleAuth,
+  updateBalance,
   // uploadAvatar,
   repeatEmailForVerifyUser,
   verifyUser,

@@ -5,7 +5,7 @@ import helmet from 'helmet';
 import swaggerUi from 'swagger-ui-express';
 import { HttpCode, LIMIT_JSON } from './lib/constants';
 import swaggerDocument from './swagger.json';
-// import transactionsRouter from './routes/api/transactions';
+import transactionsRouter from './routes/transactions/index';
 import authRouter from './routes/auth';
 
 const app = express();
@@ -20,7 +20,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 //Routes
 
 app.use('/api/users', authRouter);
-// app.use('/api/transactions', transactionsRouter);
+app.use('/api/transactions', transactionsRouter);
 
 app.use((req, res) => {
   res.status(HttpCode.NOT_FOUND).json({

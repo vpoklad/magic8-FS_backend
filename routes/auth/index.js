@@ -5,6 +5,7 @@ import {
   login,
   logout,
   getCurrent,
+  updateBalance,
   // uploadAvatar,
   verifyUser,
   repeatEmailForVerifyUser,
@@ -21,6 +22,7 @@ authRouter.get('/google-redirect', googleRedirect);
 authRouter.post('/login', addAuthValidation, login);
 authRouter.post('/logout', guard, logout);
 authRouter.get('/current', guard, getCurrent);
+authRouter.patch('/balance', guard, updateBalance);
 // authRouter.patch("/avatar", guard, upload.single("avatar"), uploadAvatar);
 authRouter.get('/verify/:verificationToken', verifyUser);
 authRouter.post('/verify', repeatEmailForVerifyUser);
