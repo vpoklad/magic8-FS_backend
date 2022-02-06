@@ -1,18 +1,18 @@
-import User from "../model/user";
+import User from '../model/user';
 
-const findById = async (id) => {
+const findById = async id => {
   return await User.findById(id);
 };
 
-const findByEmail = async (email) => {
+const findByEmail = async email => {
   return await User.findOne({ email });
 };
 
-const findByVerifyToken = async (verificationToken) => {
+const findByVerifyToken = async verificationToken => {
   return await User.findOne({ verificationToken });
 };
 
-const createNewUser = async (body) => {
+const createNewUser = async body => {
   const user = new User(body);
   return await user.save();
 };
@@ -28,8 +28,12 @@ const updateAvatar = async (id, avatarURL) => {
 const updateVerification = async (id, status) => {
   return await User.updateOne(
     { _id: id },
-    { isVerify: status, verificationToken: null }
+    { isVerify: status, verificationToken: null },
   );
+};
+
+const updateBalance = async (id, balance) => {
+  return await User.updateOne({ _id: id }, { balance }, { new: true });
 };
 
 export default {
@@ -40,4 +44,5 @@ export default {
   updateAvatar,
   findByVerifyToken,
   updateVerification,
+  updateBalance,
 };
