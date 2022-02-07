@@ -1,4 +1,6 @@
 import Transaction from '../model/transaction';
+import mongoose from 'mongoose';
+const { Types } = mongoose;
 
 const transactionsList = async (
   userId,
@@ -59,10 +61,40 @@ const addTransaction = async (userId, body) => {
 //   return transaction;
 // };
 
+const getExpenseTransaction = async id => {
+  const expenses = await Transaction.aggregate([
+    {
+      $match: {
+        $and: [{ owner: Types.ObjectId(id) }, { typeOfTransaction: false }],
+      },
+    },
+    { $group: { _id: '$month', totalExpense: { $sum: '$sum' } } },
+    { $sort: { _id: -1 } },
+    { $limit: 6 },
+  ]);
+  return expenses;
+};
+
+const getIncomeTransaction = async id => {
+  const incomes = await Transaction.aggregate([
+    {
+      $match: {
+        $and: [{ owner: Types.ObjectId(id) }, { typeOfTransaction: true }],
+      },
+    },
+    { $group: { _id: '$month', totalIncome: { $sum: '$sum' } } },
+    { $sort: { _id: -1 } },
+    { $limit: 6 },
+  ]);
+  return incomes;
+};
+
 export default {
   transactionsList,
   // getTransactionById,
   removeTransaction,
   addTransaction,
   // updateTransaction,
+  getExpenseTransaction,
+  getIncomeTransaction,
 };
