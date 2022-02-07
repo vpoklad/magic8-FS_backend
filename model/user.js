@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import { randomUUID } from 'crypto';
 
 const { Schema, model } = mongooseService;
+mongooseService.SchemaTypes.String.set('trim', true);
 
 const userSchema = new Schema(
   {
@@ -21,6 +22,7 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
+      default: null,
     },
     balance: {
       type: Number,
