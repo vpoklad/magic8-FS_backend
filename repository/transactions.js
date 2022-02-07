@@ -77,8 +77,12 @@ const getExpenseTransaction = async id => {
 
 const getIncomeTransaction = async id => {
   const incomes = await Transaction.aggregate([
-    { $match: { $and: [{ owner: Types.ObjectId(id) }, { month: month }] } },
-    { $group: { _id: true, totalIncome: { $sum: '$sum' } } },
+    {
+      $match: {
+        $and: [{ owner: Types.ObjectId(id) }, { typeOfTransaction: true }],
+      },
+    },
+    { $group: { _id: '$month', totalIncome: { $sum: '$sum' } } },
     { $sort: { _id: -1 } },
     { $limit: 6 },
   ]);
