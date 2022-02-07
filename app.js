@@ -7,6 +7,7 @@ import { HttpCode, LIMIT_JSON } from './lib/constants';
 import swaggerDocument from './swagger.json';
 import transactionsRouter from './routes/transactions/index';
 import authRouter from './routes/auth';
+import statsRouter from './routes/stats/index';
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/api/users', authRouter);
 app.use('/api/transactions', transactionsRouter);
+app.use('/api/stats', statsRouter);
 
 app.use((req, res) => {
   res.status(HttpCode.NOT_FOUND).json({
