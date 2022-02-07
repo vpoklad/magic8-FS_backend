@@ -16,19 +16,6 @@ import {
 } from '../../services/email/index';
 import repositoryUsers from '../../repository/user';
 
-let baseURL;
-switch (process.env.NODE_ENV) {
-  case 'development':
-    baseURL = 'localhost:5000';
-    break;
-  case 'production':
-    baseURL = 'https://kapusta-magic8.herokuapp.com';
-
-  default:
-    baseURL = 'localhost:5000';
-    break;
-}
-
 const registration = async (req, res, next) => {
   try {
     const { email } = req.body;
@@ -105,9 +92,7 @@ const googleRedirect = async (req, res) => {
   const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
   const urlObj = new URL(fullUrl);
   const urlParams = queryString.parse(urlObj.search);
-
   const code = urlParams.code;
-
   const tokenData = await axios({
     url: `https://oauth2.googleapis.com/token`,
     method: 'post',
@@ -120,7 +105,6 @@ const googleRedirect = async (req, res) => {
       code,
     },
   });
-
   const userData = await axios({
     url: 'https://www.googleapis.com/oauth2/v2/userinfo',
     method: 'get',
@@ -128,13 +112,66 @@ const googleRedirect = async (req, res) => {
       Authorization: `Bearer ${tokenData.data.access_token}`,
     },
   });
-  console.log(userData);
-
+  // userData.data.email
+  // ...
+  // ...
+  // ...
   return res.redirect(
-    `http://localhost:3000/google-redirect?email=${userData.data.email}`,
-    // ПОМЕНЯТЬ НА ПРОДЕ
+    `https://magic8-kapusta.netlify.app/google?email=${userData.data.email}`,
   );
 };
+
+// const googleAuth = async (req, res) => {
+//   console.log(baseURL);
+//   const stringifiedParams = queryString.stringify({
+//     client_id: process.env.GOOGLE_CLIENT_ID,
+//     redirect_uri: `${baseURL}/api/users/google-redirect`,
+//     scope: [
+//       'https://www.googleapis.com/auth/userinfo.email',
+//       'https://www.googleapis.com/auth/userinfo.profile',
+//     ].join(' '),
+//     response_type: 'code',
+//     access_type: 'offline',
+//     prompt: 'consent',
+//   });
+//   return res.redirect(
+//     `https://accounts.google.com/o/oauth2/v2/auth?${stringifiedParams}`,
+//   );
+// };
+
+// const googleRedirect = async (req, res) => {
+//   const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+//   const urlObj = new URL(fullUrl);
+//   const urlParams = queryString.parse(urlObj.search);
+
+//   const code = urlParams.code;
+
+//   const tokenData = await axios({
+//     url: `https://oauth2.googleapis.com/token`,
+//     method: 'post',
+//     data: {
+//       client_id: process.env.GOOGLE_CLIENT_ID,
+//       client_secret: process.env.GOOGLE_CLIENT_SECRET,
+//       redirect_uri: `${baseURL}/api/users/google-redirect`,
+//       grant_type: 'authorization_code',
+//       code,
+//     },
+//   });
+
+//   const userData = await axios({
+//     url: 'https://www.googleapis.com/oauth2/v2/userinfo',
+//     method: 'get',
+//     headers: {
+//       Authorization: `Bearer ${tokenData.data.access_token}`,
+//     },
+//   });
+//   console.log(userData);
+
+//   return res.redirect(
+//     `http://localhost:3000/google-redirect?email=${userData.data.email}`,
+//     // ПОМЕНЯТЬ НА ПРОДЕ
+//   );
+// };
 
 const logout = async (req, res, _next) => {
   await authService.setToken(req.user.id, null);
