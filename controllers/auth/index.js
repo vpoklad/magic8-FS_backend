@@ -32,7 +32,8 @@ switch (process.env.NODE_ENV) {
 const registration = async (req, res, next) => {
   try {
     const { email } = req.body;
-    const isUserExist = await authService.isUserExist(email);
+    const normalizeEmail = email.toLowerCase();
+    const isUserExist = await authService.isUserExist(normalizeEmail);
     if (isUserExist) {
       return res.status(HttpCode.CONFLICT).json({
         status: 'error',
