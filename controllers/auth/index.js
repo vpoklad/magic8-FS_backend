@@ -16,7 +16,8 @@ import repositoryUsers from '../../repository/user';
 const registration = async (req, res, next) => {
   try {
     const { email } = req.body;
-    const isUserExist = await authService.isUserExist(email);
+    const normalizeEmail = email.toLowerCase();
+    const isUserExist = await authService.isUserExist(normalizeEmail);
     if (isUserExist) {
       return res.status(HttpCode.CONFLICT).json({
         status: 'error',
@@ -59,13 +60,11 @@ const login = async (req, res, _next) => {
   }
   const token = authService.getToken(user);
   await authService.setToken(user.id, token);
-  res
-    .status(HttpCode.OK)
-    .json({
-      status: 'success',
-      code: HttpCode.OK,
-      data: { token, email, balance: user.balance },
-    });
+  res.status(HttpCode.OK).json({
+    status: 'success',
+    code: HttpCode.OK,
+    data: { token, email, balance: user.balance },
+  });
 };
 
 const logout = async (req, res, _next) => {
