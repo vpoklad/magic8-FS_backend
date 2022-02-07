@@ -12,7 +12,9 @@ const transactionSchema = new Schema(
       required: [true, 'Set category for transaction'],
     },
     sum: {
-      type: String,
+      // type: String,
+      type: Number,
+      default: 0.0,
       required: [true, 'Set sum of transaction'],
     },
     date: {
@@ -20,6 +22,10 @@ const transactionSchema = new Schema(
 
       // до вияснення..
     },
+    // year: { type: String, default: ()=>data.getFullYear() },
+    year: { type: String, default: '2022' },
+    month: { type: String, default: '07' },
+    day: { type: String, default: '07' },
     typeOfTransaction: {
       type: Boolean,
       default: false, // видатки - false, доходи - true
