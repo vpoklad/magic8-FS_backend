@@ -86,7 +86,7 @@ const login = async (req, res, _next) => {
 const googleAuth = async (req, res) => {
   const stringifiedParams = queryString.stringify({
     client_id: process.env.GOOGLE_CLIENT_ID,
-    redirect_uri: `${baseURL}/users/google-redirect`,
+    redirect_uri: 'https://kapusta-magic8.herokuapp.com/users/google-redirect',
     scope: [
       'https://www.googleapis.com/auth/userinfo.email',
       'https://www.googleapis.com/auth/userinfo.profile',
@@ -113,7 +113,8 @@ const googleRedirect = async (req, res) => {
     data: {
       client_id: process.env.GOOGLE_CLIENT_ID,
       client_secret: process.env.GOOGLE_CLIENT_SECRET,
-      redirect_uri: `${baseURL}/api/users/google-redirect`,
+      redirect_uri:
+        'https://kapusta-magic8.herokuapp.com/api/users/google-redirect',
       grant_type: 'authorization_code',
       code,
     },
