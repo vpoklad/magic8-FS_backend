@@ -6,6 +6,8 @@ import {
   logout,
   getCurrent,
   updateBalance,
+  googleAuth,
+  googleRedirect,
   // uploadAvatar,
   verifyUser,
   repeatEmailForVerifyUser,
