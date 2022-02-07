@@ -3,7 +3,12 @@ import bcrypt from 'bcryptjs';
 import { randomUUID } from 'crypto';
 
 const { Schema, model } = mongooseService;
+
 mongooseService.SchemaTypes.String.set('trim', true);
+
+function toLower(v) {
+  return v.toLowerCase();
+}
 
 const userSchema = new Schema(
   {
@@ -13,6 +18,7 @@ const userSchema = new Schema(
     },
     email: {
       type: String,
+      set: toLower,
       required: [true, 'Set email for user!'],
       unique: true,
       validate(value) {
