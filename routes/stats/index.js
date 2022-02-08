@@ -10,7 +10,7 @@ import { guard } from '../../middlewares/guard';
 
 const statsRouter = new Router();
 
-statsRouter.get('/expense/:id', guard, getSummaryExpense);
-statsRouter.get('/income/:id', guard, getSummaryIncome);
+statsRouter.get('/expense/', guard, getSummaryExpense);
+statsRouter.get('/income/', guard, getSummaryIncome);
 
 export default statsRouter;
