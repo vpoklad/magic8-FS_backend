@@ -118,7 +118,7 @@ const googleRedirect = async (req, res) => {
   // ...
   return res.redirect(
     // `https://magic8-kapusta.netlify.app/google?email=${userData.data.email}`,
-    `https://localhost:3000/google?email=${userData.data.email}`,
+    `http://localhost:3000/google?email=${userData.data.email}`,
   );
 };
 
