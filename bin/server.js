@@ -7,7 +7,6 @@ const PORT = process.env.PORT || 5000;
 
 db.then(() => {
   app.listen(PORT, async () => {
-    // await mkdir(process.env.UPLOAD_DIR, { recursive: true });
     console.log(`Server is running. Use our API on port: ${PORT}`);
   });
 }).catch(err => {
