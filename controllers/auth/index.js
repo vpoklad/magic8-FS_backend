@@ -74,8 +74,8 @@ const googleAuth = async (req, res) => {
   const stringifiedParams = queryString.stringify({
     client_id: process.env.GOOGLE_CLIENT_ID,
     redirect_uri:
-      // 'https://kapusta-magic8.herokuapp.com/api/users/google-redirect',
-      'http://localhost:5000/api/users/google-redirect',
+      'https://kapusta-magic8.herokuapp.com/api/users/google-redirect',
+    // 'http://localhost:5000/api/users/google-redirect',
     scope: [
       'https://www.googleapis.com/auth/userinfo.email',
       'https://www.googleapis.com/auth/userinfo.profile',
@@ -90,6 +90,7 @@ const googleAuth = async (req, res) => {
 };
 
 const googleRedirect = async (req, res) => {
+  console.log(process.env.NODE_ENV);
   const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
   const urlObj = new URL(fullUrl);
   const urlParams = queryString.parse(urlObj.search);
@@ -101,8 +102,8 @@ const googleRedirect = async (req, res) => {
       client_id: process.env.GOOGLE_CLIENT_ID,
       client_secret: process.env.GOOGLE_CLIENT_SECRET,
       redirect_uri:
-        // 'https://kapusta-magic8.herokuapp.com/api/users/google-redirect',
-        'http://localhost:5000/api/users/google-redirect',
+        'https://kapusta-magic8.herokuapp.com/api/users/google-redirect',
+      // 'http://localhost:5000/api/users/google-redirect',
       grant_type: 'authorization_code',
       code,
     },
@@ -115,17 +116,18 @@ const googleRedirect = async (req, res) => {
     },
   });
   const { email, picture } = userData.data;
-  const isUserinDB = authService.isUserExist(email);
+  const isUserinDB = await authService.isUserExist(email);
   if (!isUserinDB) {
     const createdUser = await authService.create({
       email: email,
       avatarURL: picture,
     });
+    console.log(createdUser);
     const accessToken = await authService.getToken(createdUser);
     await authService.setToken(createdUser.id, accessToken);
-    repositoryUsers.updateVerification(createdUser.id, true);
+    await repositoryUsers.updateVerification(createdUser.id, true);
     return res.redirect(
-      // `https://magic8-kapusta.netlify.app/google?email=${userData.data.email}`,
+      // `https://magic8-kapusta.netlify.app/google??email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}`,
       `http://localhost:3000/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}`,
     );
   }
@@ -134,7 +136,7 @@ const googleRedirect = async (req, res) => {
   await authService.setToken(userInDB.id, accessToken);
 
   return res.redirect(
-    // `https://magic8-kapusta.netlify.app/google?email=${userData.data.email}`,
+    // `https://magic8-kapusta.netlify.app/google??email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}`,
     `http://localhost:3000/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}`,
   );
 };
