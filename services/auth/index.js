@@ -14,10 +14,10 @@ class AuthService {
       id,
       name,
       email, //avatarURL
-      role,
+      avatarURL,
       verificationToken,
     } = await UsersRepository.createNewUser(body);
-    return { id, name, email, role, verificationToken }; //avatarURL
+    return { id, name, email, avatarURL, verificationToken }; //avatarURL
   }
 
   async getUser(email, password) {
@@ -26,6 +26,11 @@ class AuthService {
     if (!isValidPassword || !user?.isVerify) {
       return null;
     }
+    return user;
+  }
+
+  async getUserFromGoogle(email) {
+    const user = await UsersRepository.findByEmail(email);
     return user;
   }
 
