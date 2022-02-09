@@ -126,8 +126,8 @@ const googleRedirect = async (req, res) => {
     await authService.setToken(createdUser.id, accessToken);
     await repositoryUsers.updateVerification(createdUser.id, true);
     return res.redirect(
-      `https://magic8-kapusta.netlify.app/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}&balance=${createdUser.balance}`,
-      // `http://localhost:3000/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}&balance=${createdUser.balance}`,
+      // `https://magic8-kapusta.netlify.app/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}&balance=${createdUser.balance}`,
+      `http://localhost:3000/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}&balance=${createdUser.balance}`,
     );
   }
   const userInDB = await authService.getUserFromGoogle(email);
@@ -135,8 +135,8 @@ const googleRedirect = async (req, res) => {
   await authService.setToken(userInDB.id, accessToken);
 
   return res.redirect(
-    `https://magic8-kapusta.netlify.app/google?email=${userInDB.email}&avatarURL=${userInDB.avatarURL}&token=${accessToken}&balance=${userInDB.balance}`,
-    // `http://localhost:3000/google?email=${userInDB.email}&avatarURL=${userInDB.avatarURL}&token=${accessToken}&balance=${userInDB.balance}`,
+    // `https://magic8-kapusta.netlify.app/google?email=${userInDB.email}&avatarURL=${userInDB.avatarURL}&token=${accessToken}&balance=${userInDB.balance}`,
+    `http://localhost:3000/google?email=${userInDB.email}&avatarURL=${userInDB.avatarURL}&token=${accessToken}&balance=${userInDB.balance}`,
   );
 };
 
