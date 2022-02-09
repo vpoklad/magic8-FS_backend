@@ -6,6 +6,7 @@ const addTransactionSchema = Joi.object({
   name: Joi.string().required(),
   category: Joi.string().required(),
   sum: Joi.string().required(),
+  // sum: Joi.number().required(),
   date: Joi.string().required(),
   typeOfTransaction: Joi.bool().required(),
 });

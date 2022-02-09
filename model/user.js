@@ -4,12 +4,6 @@ import { randomUUID } from 'crypto';
 
 const { Schema, model } = mongooseService;
 
-mongooseService.SchemaTypes.String.set('trim', true);
-
-function toLower(v) {
-  return v.toLowerCase();
-}
-
 const userSchema = new Schema(
   {
     name: {
@@ -18,7 +12,8 @@ const userSchema = new Schema(
     },
     email: {
       type: String,
-      set: toLower,
+      lowercase: true,
+      trim: true,
       required: [true, 'Set email for user!'],
       unique: true,
       validate(value) {
