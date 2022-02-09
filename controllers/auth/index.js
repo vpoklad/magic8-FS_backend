@@ -121,7 +121,7 @@ const googleRedirect = async (req, res) => {
       email: email,
       avatarURL: picture,
     });
-    console.log(createdUser);
+    
     const accessToken = await authService.getToken(createdUser);
     await authService.setToken(createdUser.id, accessToken);
     await repositoryUsers.updateVerification(createdUser.id, true);
