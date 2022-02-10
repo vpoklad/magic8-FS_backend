@@ -3,11 +3,13 @@ import mongoose from 'mongoose';
 const { Types } = mongoose;
 
 const addTransactionSchema = Joi.object({
-  name: Joi.string().required(),
+  description: Joi.string().required(),
   category: Joi.string().required(),
-  sum: Joi.string().required(),
-  // sum: Joi.number().required(),
+  sum: Joi.number().precision(2).required(),
   date: Joi.string().required(),
+  year: Joi.number().optional(),
+  month: Joi.number().optional(),
+  day: Joi.number().optional(),
   typeOfTransaction: Joi.bool().required(),
 });
 

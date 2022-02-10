@@ -148,11 +148,11 @@ const logout = async (req, res, _next) => {
 };
 
 const getCurrent = (req, res, _next) => {
-  const { email, name } = req.user;
+  const { email, name, balance } = req.user;
   res.status(HttpCode.OK).json({
     status: 'success',
     code: HttpCode.OK,
-    data: { email, name },
+    data: { email, name, balance },
   });
 };
 

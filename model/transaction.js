@@ -1,35 +1,31 @@
-import pkg from 'joi';
-const { number } = pkg;
 import mongoose from 'mongoose';
 const { Schema, SchemaTypes, model } = mongoose;
 
 function date() {
   const newDate = new Date();
-  const year = String(newDate.getFullYear());
-  // const month = String(newDate.getMonth());
+  const year = Number(newDate.getFullYear());
+  // const month = Number(newDate.getMonth());
   const month = Math.round(Math.random() * 11);
-  const seconds = String(newDate.getSeconds());
+  const day = Number(newDate.getDay());
 
-  return { year, month, seconds };
+  return { year, month, day };
 }
 
 const transactionSchema = new Schema(
   {
-    name: {
+    description: {
       type: String,
-      required: [true, 'Set name for transaction'], // по мекету "Описание"
+      required: [true, 'Set description for transaction'], // по мекету "Описание"
     },
     category: {
       type: String,
       required: [true, 'Set category for transaction'],
     },
     sum: {
-      // type: String,v.toFixed(2)
       type: Number,
-      // default: 0.0,
-      get: v => parseFloat(v).toFixed(2),
-      set: v => parseFloat(v).toFixed(2),
-      //alias: 'sumF',
+      default: 0.0,
+      get: v => v.toFixed(2),
+      set: v => v.toFixed(2),
       required: [true, 'Set sum of transaction'],
     },
     date: {
@@ -39,13 +35,9 @@ const transactionSchema = new Schema(
 
       // до вияснення..
     },
-    // date: { type: Date, transform: v => v.getFullYear() },
-    year: { type: String, default: () => date().year },
-    month: { type: String, default: () => date().month },
-    seconds: { type: String, default: () => date().seconds },
-    // year: { type: String, default: '2022' },
-    // month: { type: String, default: '7' },
-    // day: { type: String, default: '07' },
+    year: { type: Number, default: () => date().year },
+    month: { type: Number, default: () => date().month },
+    day: { type: Number, default: () => date().day },
     typeOfTransaction: {
       type: Boolean,
       default: false, // видатки - false, доходи - true
