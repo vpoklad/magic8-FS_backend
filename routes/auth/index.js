@@ -13,7 +13,7 @@ import {
   verifyUser,
   repeatEmailForVerifyUser,
 } from '../../controllers/auth/index';
-import { addAuthValidation } from './validationAuth';
+import { addAuthValidation, addBalanceValidation } from './validationAuth';
 import { guard } from '../../middlewares/guard';
 // import { upload } from "../../../middlewares/upload";
 
