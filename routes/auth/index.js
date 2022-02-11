@@ -12,7 +12,7 @@ import {
   verifyUser,
   repeatEmailForVerifyUser,
 } from '../../controllers/auth/index';
-import { addAuthValidation } from './validationAuth';
+import { addAuthValidation, addBalanceValidation } from './validationAuth';
 import { guard } from '../../middlewares/guard';
 // import { upload } from "../../../middlewares/upload";
 
@@ -24,7 +24,7 @@ authRouter.get('/google-redirect', googleRedirect);
 authRouter.post('/login', addAuthValidation, login);
 authRouter.post('/logout', guard, logout);
 authRouter.get('/current', guard, getCurrent);
-authRouter.patch('/balance', guard, updateBalance);
+authRouter.patch('/balance', guard, addBalanceValidation, updateBalance);
 // authRouter.patch("/avatar", guard, upload.single("avatar"), uploadAvatar);
 authRouter.get('/verify/:verificationToken', verifyUser);
 authRouter.post('/verify', repeatEmailForVerifyUser);

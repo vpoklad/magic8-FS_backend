@@ -102,6 +102,68 @@ const getIncomeTransaction = async (id, body) => {
   return incomes;
 };
 
+const getDetailedTransaction = async (id, body) => {
+  const { year, month } = body;
+
+  const totalExpInc = await Transaction.aggregate([
+    {
+      $match: {
+        $and: [{ owner: Types.ObjectId(id) }, { year }, { month }],
+      },
+    },
+    {
+      $group: {
+        _id: '$typeOfTransaction',
+        total: { $sum: '$sum' },
+      },
+    },
+    { $sort: { _id: 1 } },
+  ]);
+
+  const detailedCategoryStatistic = await Transaction.aggregate([
+    {
+      $match: {
+        $and: [{ owner: Types.ObjectId(id) }, { year }, { month }],
+      },
+    },
+    {
+      $group: {
+        _id: {
+          typeOfTransaction: '$typeOfTransaction',
+          category: '$category',
+        },
+
+        total: { $sum: '$sum' },
+      },
+    },
+  ]);
+
+  const detailedDescriptionStatistic = await Transaction.aggregate([
+    {
+      $match: {
+        $and: [{ owner: Types.ObjectId(id) }, { year }, { month }],
+      },
+    },
+    {
+      $group: {
+        _id: {
+          typeOfTransaction: '$typeOfTransaction',
+          description: '$description',
+          category: '$category',
+        },
+        total: { $sum: '$sum' },
+      },
+    },
+    { $sort: { total: -1 } },
+  ]);
+
+  return {
+    totalExpInc,
+    detailedCategoryStatistic,
+    detailedDescriptionStatistic,
+  };
+};
+
 export default {
   transactionsList,
   // getTransactionById,
@@ -110,4 +172,5 @@ export default {
   // updateTransaction,
   getExpenseTransaction,
   getIncomeTransaction,
+  getDetailedTransaction,
 };
