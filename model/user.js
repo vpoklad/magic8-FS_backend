@@ -32,6 +32,8 @@ const userSchema = new Schema(
     balance: {
       type: Number,
       default: 0.0,
+      get: v => parseFloat(v).toFixed(2),
+      set: v => parseFloat(v).toFixed(2),
     },
     token: {
       type: String,

@@ -147,9 +147,29 @@ const getDetailedTransaction = async (id, body) => {
       },
     },
 
-    { $sort: { typeOfTransaction: +1 } },
+    { $sort: { typeOfTransaction: -1 } },
   ]);
-  return detailedCategoryStatistic;
+
+  const detailedDescriptionStatistic = await Transaction.aggregate([
+    {
+      $match: {
+        $and: [{ owner: Types.ObjectId(id) }, { year }, { month }],
+      },
+    },
+    {
+      $group: {
+        _id: {
+          typeOfTransaction: '$typeOfTransaction',
+          description: '$description',
+          category: '$category',
+        },
+        total: { $sum: '$sum' },
+      },
+    },
+    { $sort: { typeOfTransaction: -1 } },
+  ]);
+
+  return [totalExpInc, detailedCategoryStatistic, detailedDescriptionStatistic];
 };
 
 export default {
