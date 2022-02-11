@@ -148,11 +148,20 @@ const logout = async (req, res, _next) => {
 };
 
 const getCurrent = (req, res, _next) => {
-  const { email, name, balance } = req.user;
+  const { email, name } = req.user;
   res.status(HttpCode.OK).json({
     status: 'success',
     code: HttpCode.OK,
-    data: { email, name, balance },
+    data: { email, name },
+  });
+};
+
+const getBalance = (req, res, _next) => {
+  const { balance } = req.user;
+  res.status(HttpCode.OK).json({
+    status: 'success',
+    code: HttpCode.OK,
+    data: balance,
   });
 };
 
@@ -254,6 +263,7 @@ export {
   getCurrent,
   googleAuth,
   googleRedirect,
+  getBalance,
   updateBalance,
   // uploadAvatar,
   repeatEmailForVerifyUser,

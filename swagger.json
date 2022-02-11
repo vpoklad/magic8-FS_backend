@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.0.1",
+    "version": "2.0.0",
     "title": "Swagger for kapusta",
     "description": "Kapusta swagger documentation",
     "license": {
@@ -23,8 +23,13 @@
     {
       "name": "Transaction",
       "description": "Transaction endpoints"
+    },
+    {
+      "name": "Stats",
+      "description": "Stats endpoints"
     }
   ],
+
   "paths": {
     "/api/users/registration": {
       "post": {
@@ -152,7 +157,7 @@
         },
         "responses": {
           "200": {
-            "description": "Succes operation",
+            "description": "Success operation",
             "content": {
               "application/json": {
                 "schema": {
@@ -212,7 +217,7 @@
       },
       "post": {
         "tags": ["Auth"],
-        "summary": "User re-verificztion",
+        "summary": "User re-verification",
         "parameters": [],
         "requestBody": {
           "description": "Repeat email for verification  object",
@@ -252,8 +257,122 @@
           }
         }
       }
+    },
+    "/api/users/balance": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "User authentification",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Currents's object",
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "Success operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotAuthorized"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/api/transactions": {
+      "post": {
+        "tags": ["Transaction"],
+        "summary": "User transaction",
+        "parameters": [],
+        "requestBody": {
+          "description": "Transaction's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      },
+      "get": {
+        "tags": ["Transaction"],
+        "summary": "User transactions",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Currents's object",
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "Success operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsAllResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotAuthorized"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
     }
   },
+
   "components": {
     "schemas": {
       "RegistrationRequest": {
@@ -306,6 +425,63 @@
       },
 
       "LogOutRequest": {},
+
+      "TransactionRequest": {
+        "type": "object",
+        "required": [
+          "description",
+          "category",
+          "sum",
+          "date",
+          "year",
+          "month",
+          "day",
+          "typeOfTransaction"
+        ],
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Description transaction",
+            "example": "Кава"
+          },
+          "category": {
+            "type": "string",
+            "description": "Category transaction",
+            "example": "foods"
+          },
+          "sum": {
+            "type": "number",
+            "description": "Summa transaction",
+            "example": 150.55
+          },
+          "date": {
+            "type": "string",
+            "description": "Date transaction",
+            "example": "11.02.2022"
+          },
+          "year": {
+            "type": "string",
+            "description": "Year transaction",
+            "example": "2022"
+          },
+          "month": {
+            "type": "string",
+            "description": "Month transaction",
+            "example": "02"
+          },
+          "day": {
+            "type": "string",
+            "description": "Day transaction",
+            "example": "11"
+          },
+          "typeOfTransaction": {
+            "type": "boolean",
+            "description": "Type transaction",
+            "example": false
+          }
+        }
+      },
+
       "RegistrationResponse": {
         "type": "object",
         "properties": {
@@ -413,6 +589,149 @@
                   "type": "string",
                   "example": "John Doe"
                 }
+              }
+            }
+          }
+        }
+      },
+      "BalanceResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status of request",
+            "example": "success"
+          },
+          "code": {
+            "type": "number",
+            "description": "Status of request",
+            "example": "200"
+          },
+          "data": {
+            "type": "number",
+            "description": "User`s Balance",
+            "example": "1100.55"
+          }
+        }
+      },
+      "TransactionResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status of request",
+            "example": "success"
+          },
+          "code": {
+            "type": "number",
+            "description": "Status of request",
+            "example": "200"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "transaction": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "description": "Description transaction",
+                    "example": "Кава"
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "Category transaction",
+                    "example": "foods"
+                  },
+                  "sum": {
+                    "type": "number",
+                    "description": "Summa transaction",
+                    "example": 150.55
+                  },
+                  "date": {
+                    "type": "string",
+                    "description": "Date transaction",
+                    "example": "11.02.2022"
+                  },
+                  "year": {
+                    "type": "string",
+                    "description": "Year transaction",
+                    "example": "2022"
+                  },
+                  "month": {
+                    "type": "string",
+                    "description": "Month transaction",
+                    "example": "02"
+                  },
+                  "day": {
+                    "type": "string",
+                    "description": "Day transaction",
+                    "example": "11"
+                  },
+                  "typeOfTransaction": {
+                    "type": "boolean",
+                    "description": "Type transaction",
+                    "example": false
+                  },
+                  "owner": {
+                    "type": "string",
+                    "description": "Owner id",
+                    "example": "620127666e014907c7f14946"
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "Transaction id",
+                    "example": "6206b0c5f7ad745358c47d23"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "TransactionsAllResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status of request",
+            "example": "success"
+          },
+          "code": {
+            "type": "number",
+            "description": "Status of request",
+            "example": "200"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "number",
+                "description": "Total number of transactions",
+                "example": 1
+              },
+              "transactions": {
+                "type": "array",
+                "example": [
+                  {
+                    "description": "Зелень-6",
+                    "category": "food",
+                    "sum": 50.35,
+                    "date": "11.02.2022",
+                    "typeOfTransaction": false,
+                    "owner": {
+                      "name": "Guest",
+                      "email": "khomaslv@gmail.com",
+                      "id": "620127666e014907c7f14946"
+                    },
+                    "year": 2022,
+                    "month": 8,
+                    "day": 5,
+                    "createdAt": "2022-02-11T18:53:57.936Z",
+                    "updatedAt": "2022-02-11T18:53:57.936Z",
+                    "id": "6206b0c5f7ad745358c47d23"
+                  }
+                ]
               }
             }
           }
