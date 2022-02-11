@@ -7,8 +7,8 @@ function date() {
   const newDate = new Date();
   const year = String(newDate.getFullYear());
   // const month = String(newDate.getMonth());
-  const month = Math.round(Math.random() * 11);
-  const seconds = String(newDate.getSeconds());
+  const month = Math.round(Math.random() * 5);
+  // const seconds = String(newDate.getSeconds());
 
   return { year, month, seconds };
 }
@@ -42,10 +42,10 @@ const transactionSchema = new Schema(
     // date: { type: Date, transform: v => v.getFullYear() },
     year: { type: String, default: () => date().year },
     month: { type: String, default: () => date().month },
-    seconds: { type: String, default: () => date().seconds },
+    // seconds: { type: String, default: () => date().seconds },
     // year: { type: String, default: '2022' },
     // month: { type: String, default: '7' },
-    // day: { type: String, default: '07' },
+    day: { type: String, default: '07' },
     typeOfTransaction: {
       type: Boolean,
       default: false, // видатки - false, доходи - true
