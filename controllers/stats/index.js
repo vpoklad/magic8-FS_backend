@@ -4,9 +4,9 @@ import { HttpCode } from '../../lib/constants';
 const getSummaryExpense = async (req, res, _next) => {
   // const { id } = req.params;
   // console.log('userId: ', id);
-  // const { month } = req.body;
+  const body = req.body;
   const { id } = req.user;
-  const data = await repositoryTransactions.getExpenseTransaction(id);
+  const data = await repositoryTransactions.getExpenseTransaction(id, body);
   if (!data) {
     return res.status(HttpCode.NOT_FOUND).json({
       status: 'error',
@@ -21,9 +21,9 @@ const getSummaryExpense = async (req, res, _next) => {
 
 const getSummaryIncome = async (req, res, _next) => {
   // const { id } = req.params;
-  // const { month } = req.body;
+  const body = req.body;
   const { id } = req.user;
-  const data = await repositoryTransactions.getIncomeTransaction(id);
+  const data = await repositoryTransactions.getIncomeTransaction(id, body);
   if (!data) {
     return res.status(HttpCode.NOT_FOUND).json({
       status: 'error',

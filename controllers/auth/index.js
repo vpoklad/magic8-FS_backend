@@ -90,7 +90,6 @@ const googleAuth = async (req, res) => {
 };
 
 const googleRedirect = async (req, res) => {
-  console.log(process.env.NODE_ENV);
   const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
   const urlObj = new URL(fullUrl);
   const urlParams = queryString.parse(urlObj.search);
@@ -122,13 +121,13 @@ const googleRedirect = async (req, res) => {
       email: email,
       avatarURL: picture,
     });
-    console.log(createdUser);
+
     const accessToken = await authService.getToken(createdUser);
     await authService.setToken(createdUser.id, accessToken);
     await repositoryUsers.updateVerification(createdUser.id, true);
     return res.redirect(
-      // `https://magic8-kapusta.netlify.app/google??email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}`,
-      `http://localhost:3000/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}`,
+      // `https://magic8-kapusta.netlify.app/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}&balance=${createdUser.balance}`,
+      `http://localhost:3000/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}&balance=${createdUser.balance}`,
     );
   }
   const userInDB = await authService.getUserFromGoogle(email);
@@ -136,8 +135,8 @@ const googleRedirect = async (req, res) => {
   await authService.setToken(userInDB.id, accessToken);
 
   return res.redirect(
-    // `https://magic8-kapusta.netlify.app/google??email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}`,
-    `http://localhost:3000/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}`,
+    // `https://magic8-kapusta.netlify.app/google?email=${userInDB.email}&avatarURL=${userInDB.avatarURL}&token=${accessToken}&balance=${userInDB.balance}`,
+    `http://localhost:3000/google?email=${userInDB.email}&avatarURL=${userInDB.avatarURL}&token=${accessToken}&balance=${userInDB.balance}`,
   );
 };
 
