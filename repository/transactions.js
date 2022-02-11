@@ -103,7 +103,7 @@ const getIncomeTransaction = async (id, body) => {
 };
 
 const getDetailedTransaction = async (id, body) => {
-  const { typeOfTransaction, year, month } = body;
+  const { year, month } = body;
 
   const totalExpInc = await Transaction.aggregate([
     {
@@ -117,6 +117,7 @@ const getDetailedTransaction = async (id, body) => {
         total: { $sum: '$sum' },
       },
     },
+    { $sort: { _id: 1 } },
   ]);
 
   const detailedCategoryStatistic = await Transaction.aggregate([
@@ -130,8 +131,8 @@ const getDetailedTransaction = async (id, body) => {
         _id: {
           typeOfTransaction: '$typeOfTransaction',
           category: '$category',
-          // month: '$month',
         },
+
         total: { $sum: '$sum' },
       },
     },
