@@ -6,13 +6,13 @@ const SECRET_KEY = process.env.JWT_SECRET_KEY;
 class AuthService {
   async isUserExist(email) {
     const user = await UsersRepository.findByEmail(email);
-    return !!user; // приведение к булевому типу
+    return !!user;
   }
 
   async create(body) {
     const { id, balance, email, avatarURL, verificationToken } =
       await UsersRepository.createNewUser(body);
-    return { id, balance, email, avatarURL, verificationToken }; //avatarURL
+    return { id, balance, email, avatarURL, verificationToken };
   }
 
   async getUser(email, password) {

@@ -44,7 +44,7 @@ const registration = async (req, res, next) => {
     res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
-      data: { ...userData, verificationEmailSend: isMessageSend },
+      data: { email: userData.email, verificationEmailSend: isMessageSend },
     });
   } catch (error) {
     next(error);
@@ -66,7 +66,7 @@ const login = async (req, res, _next) => {
   res.status(HttpCode.OK).json({
     status: 'success',
     code: HttpCode.OK,
-    data: { token, email, balance: user.balance },
+    data: { token, email },
   });
 };
 
@@ -254,7 +254,7 @@ export {
   getCurrent,
   googleAuth,
   googleRedirect,
-  getBalance,
+  // getBalance,
   updateBalance,
   // uploadAvatar,
   repeatEmailForVerifyUser,
