@@ -6,13 +6,14 @@ import {
   logout,
   getCurrent,
   updateBalance,
+  getBalance,
   googleAuth,
   googleRedirect,
   // uploadAvatar,
   verifyUser,
   repeatEmailForVerifyUser,
 } from '../../controllers/auth/index';
-import { addAuthValidation } from './validationAuth';
+import { addAuthValidation, addBalanceValidation } from './validationAuth';
 import { guard } from '../../middlewares/guard';
 // import { upload } from "../../../middlewares/upload";
 
@@ -25,6 +26,7 @@ authRouter.post('/login', addAuthValidation, login);
 authRouter.post('/logout', guard, logout);
 authRouter.get('/current', guard, getCurrent);
 authRouter.patch('/balance', guard, updateBalance);
+authRouter.get('/balance', guard, getBalance);
 // authRouter.patch("/avatar", guard, upload.single("avatar"), uploadAvatar);
 authRouter.get('/verify/:verificationToken', verifyUser);
 authRouter.post('/verify', repeatEmailForVerifyUser);
