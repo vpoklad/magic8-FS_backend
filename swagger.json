@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "2.0.0",
+    "version": "1.2.0",
     "title": "Swagger for kapusta",
     "description": "Kapusta swagger documentation",
     "license": {
@@ -582,6 +582,7 @@
         "required": [
           "description",
           "category",
+          "categoryLabel",
           "sum",
           "date",
           "year",
@@ -598,6 +599,11 @@
           "category": {
             "type": "string",
             "description": "Category transaction",
+            "example": "foods"
+          },
+          "categoryLabel": {
+            "type": "string",
+            "description": "Category label transaction",
             "example": "foods"
           },
           "sum": {
@@ -792,6 +798,11 @@
                     "type": "string",
                     "description": "Category transaction",
                     "example": "foods"
+                  },
+                  "categoryLabel": {
+                    "type": "string",
+                    "description": "Category label transaction",
+                    "example": "ПРОДУКТИ"
                   },
                   "sum": {
                     "type": "number",
