@@ -30,17 +30,17 @@ export default class EmailService {
     const email = {
       body: {
         name: username,
-        intro: "Welcome! We're very excited to have you on board.",
+        intro: 'Вітаємо! Раді вас бачити!',
         action: {
-          instructions: 'To get started with Kapu$ta, please click here:',
+          instructions:
+            'Щоб почати користуватися сервісом Kapu$ta, натисніть на кнопку:',
           button: {
             color: '#22BC66', // optional color of button
             text: 'Confirm your account',
             link: `${this.link}/api/users/verify/${verificationToken}`,
           },
         },
-        outro:
-          "Need help, or have questions? Don't reply to this email, we are just juniors and don't know nothing :)",
+        outro: `Або скопіюйте це посилання в строку браузера: ${this.link}/api/users/verify/${verificationToken}`,
       },
     };
     return mailGenerator.generate(email);
