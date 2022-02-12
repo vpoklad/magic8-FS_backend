@@ -38,8 +38,14 @@ const getSummaryIncome = async (req, res, _next) => {
 
 const getDetailedStatistic = async (req, res, next) => {
   const { id } = req.user;
-  const body = req.body;
-  const data = await repositoryTransactions.getDetailedTransaction(id, body);
+  const { year } = req.query;
+  const { month } = req.query;
+  // console.log(year);
+  // console.log(month);
+  const data = await repositoryTransactions.getDetailedTransaction(id, {
+    year: Number(year),
+    month: Number(month),
+  });
   if (!data) {
     return res.status(HttpCode.NOT_FOUND).json({
       status: 'error',
