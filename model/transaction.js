@@ -21,6 +21,11 @@ const transactionSchema = new Schema(
       type: String,
       required: [true, 'Set category for transaction'],
     },
+    categoryLabel: {
+      type: String,
+      uppercase: true,
+      required: [true, 'Set categoryLabel for transaction'],
+    },
     sum: {
       type: Number,
       default: 0.0,
