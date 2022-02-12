@@ -53,15 +53,15 @@ const addTransaction = async (userId, body) => {
   return transaction;
 };
 
-const updateTransaction = async userId => {
-  // const body = await Transaction.findOne({ category: 'salary', owner: userId });
-  const transaction = await Transaction.updateMany(
-    { category: 'hobby', owner: userId },
-    { $set: { categoryLabel: `СПОРТ, ХОБІ` } },
-    // { new: true },
-  );
-  return transaction;
-};
+// const updateTransaction = async userId => {
+//   // const body = await Transaction.findOne({ category: 'salary', owner: userId });
+//   const transaction = await Transaction.updateMany(
+//     { category: 'hobby', owner: userId },
+//     { $set: { categoryLabel: `СПОРТ, ХОБІ` } },
+//     // { new: true },
+//   );
+//   return transaction;
+// };
 
 const getExpenseTransaction = async (id, body) => {
   const { year, month } = body;
@@ -171,7 +171,7 @@ export default {
   // getTransactionById,
   removeTransaction,
   addTransaction,
-  updateTransaction,
+  // updateTransaction,
   getExpenseTransaction,
   getIncomeTransaction,
   getDetailedTransaction,
