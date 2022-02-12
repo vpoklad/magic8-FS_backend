@@ -53,11 +53,12 @@ const addTransaction = async (userId, body) => {
   return transaction;
 };
 
-// const updateTransaction = async (userId, transactionId, body) => {
-//   const transaction = await Transaction.findOneAndUpdate(
-//     { _id: transactionId, owner: userId },
-//     { ...body },
-//     { new: true }
+// const updateTransaction = async userId => {
+//   // const body = await Transaction.findOne({ category: 'salary', owner: userId });
+//   const transaction = await Transaction.updateMany(
+//     { category: 'hobby', owner: userId },
+//     { $set: { categoryLabel: `СПОРТ, ХОБІ` } },
+//     // { new: true },
 //   );
 //   return transaction;
 // };
@@ -131,6 +132,7 @@ const getDetailedTransaction = async (id, body) => {
         _id: {
           typeOfTransaction: '$typeOfTransaction',
           category: '$category',
+          categoryLabel: '$categoryLabel',
         },
 
         total: { $sum: '$sum' },
