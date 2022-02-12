@@ -254,6 +254,7 @@ export {
   getCurrent,
   googleAuth,
   googleRedirect,
+  getBalance,
   updateBalance,
   // uploadAvatar,
   repeatEmailForVerifyUser,
