@@ -21,6 +21,11 @@ const transactionSchema = new Schema(
       type: String,
       required: [true, 'Set category for transaction'],
     },
+    categoryLabel: {
+      type: String,
+      uppercase: true,
+      required: [true, 'Set categoryLabel for transaction'],
+    },
     sum: {
       type: Number,
       default: 0.0,
@@ -38,6 +43,7 @@ const transactionSchema = new Schema(
     year: { type: Number, default: () => date().year },
     month: { type: Number, default: () => date().month },
     day: { type: Number, default: () => date().day },
+
     typeOfTransaction: {
       type: Boolean,
       default: false, // видатки - false, доходи - true

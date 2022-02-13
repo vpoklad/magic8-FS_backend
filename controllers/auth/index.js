@@ -156,10 +156,19 @@ const getCurrent = (req, res, _next) => {
   });
 };
 
+const getBalance = (req, res, _next) => {
+  const { balance } = req.user;
+  res.status(HttpCode.OK).json({
+    status: 'success',
+    code: HttpCode.OK,
+    data: { balance },
+  });
+};
+
 const updateBalance = async (req, res, _next) => {
   const { id: userId } = req.user;
   const { balance } = req.body;
-  console.log(typeof balance);
+  // console.log(typeof balance);
   if (!balance) {
     return res.status(HttpCode.NOT_FOUND).json({
       status: 'error',
@@ -254,7 +263,7 @@ export {
   getCurrent,
   googleAuth,
   googleRedirect,
-  // getBalance,
+  getBalance,
   updateBalance,
   // uploadAvatar,
   repeatEmailForVerifyUser,
