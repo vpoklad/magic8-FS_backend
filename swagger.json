@@ -700,6 +700,24 @@
           }
         }
       },
+      "LogOutResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status of request",
+            "example": "success"
+          },
+          "code": {
+            "type": "number",
+            "description": "Status of request",
+            "example": "204"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      },
       "RepeatEmailResponse": {
         "type": "object",
         "properties": {
