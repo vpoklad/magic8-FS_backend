@@ -43,6 +43,7 @@ const transactionSchema = new Schema(
     year: { type: Number, default: () => date().year },
     month: { type: Number, default: () => date().month },
     day: { type: Number, default: () => date().day },
+
     typeOfTransaction: {
       type: Boolean,
       default: false, // видатки - false, доходи - true
