@@ -32,7 +32,7 @@ const queryParamsSchema = Joi.object({
   sortBy: Joi.string()
     .valid('name', 'typeOfTransaction', 'category', 'date', 'year', 'month')
     .optional(),
-  ortByDesc: Joi.string()
+  sortByDesc: Joi.string()
     .valid('name', 'typeOfTransaction', 'category', 'date', 'year', 'month')
     .optional(),
   filter: Joi.string()
