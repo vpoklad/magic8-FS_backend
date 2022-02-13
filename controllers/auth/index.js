@@ -56,7 +56,7 @@ const registration = async (req, res, next) => {
 const login = async (req, res, _next) => {
   const { email, password } = req.body;
   const user = await authService.getUser(email, password);
-  if (!user) {
+  if (!user || password === null) {
     return res.status(HttpCode.UNAUTHORIZED).json({
       status: 'error',
       code: HttpCode.UNAUTHORIZED,
@@ -150,11 +150,11 @@ const logout = async (req, res, _next) => {
 };
 
 const getCurrent = (req, res, _next) => {
-  const { email, balance } = req.user;
+  const { email, avatarURL } = req.user;
   res.status(HttpCode.OK).json({
     status: 'success',
     code: HttpCode.OK,
-    data: { email, balance },
+    data: { email, avatarURL },
   });
 };
 
