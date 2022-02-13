@@ -127,7 +127,7 @@ const googleRedirect = async (req, res) => {
     await repositoryUsers.updateVerification(createdUser.id, true);
     return res.redirect(
       // `https://magic8-kapusta.netlify.app/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}&balance=${createdUser.balance}`,
-      `http://localhost:3000/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}&balance=${createdUser.balance}`,
+      `http://localhost:3000/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}`,
     );
   }
   const userInDB = await authService.getUserFromGoogle(email);
@@ -136,7 +136,7 @@ const googleRedirect = async (req, res) => {
 
   return res.redirect(
     // `https://magic8-kapusta.netlify.app/google?email=${userInDB.email}&avatarURL=${userInDB.avatarURL}&token=${accessToken}&balance=${userInDB.balance}`,
-    `http://localhost:3000/google?email=${userInDB.email}&avatarURL=${userInDB.avatarURL}&token=${accessToken}&balance=${userInDB.balance}`,
+    `http://localhost:3000/google?email=${userInDB.email}&avatarURL=${userInDB.avatarURL}&token=${accessToken}`,
   );
 };
 
@@ -182,28 +182,17 @@ const updateBalance = async (req, res, _next) => {
     .json({ status: 'success', code: HttpCode.OK, data: { userBalance } });
 };
 
-// const uploadAvatar = async (req, res, _next) => {
-//   const uploadService = new UploadFileService(
-//     LocalFileStorage,
-//     req.file,
-//     req.user
-//   );
-//   const avatarUrl = await uploadService.updateAvatar();
-//   res
-//     .status(HttpCode.OK)
-//     .json({ status: "success", code: HttpCode.OK, data: { avatarUrl } });
-// };
-
 const verifyUser = async (req, res, _next) => {
   const verifyToken = req.params.verificationToken;
   const getUserFromToken = await repositoryUsers.findByVerifyToken(verifyToken);
+  console.log(getUserFromToken);
   if (getUserFromToken) {
     await repositoryUsers.updateVerification(getUserFromToken.id, true);
-    return res.status(HttpCode.OK).json({
-      status: 'success',
-      code: HttpCode.OK,
-      data: { message: 'Success' },
-    });
+    const token = await authService.getToken(getUserFromToken);
+    await authService.setToken(getUserFromToken.id, token);
+    return res.redirect(
+      `http://localhost:3000/google?email=${getUserFromToken.email}&token=${token}`,
+    );
   }
   res.status(HttpCode.BAD_REQUEST).json({
     status: 'bad request',
