@@ -3,6 +3,8 @@ import { HttpCode } from '../../lib/constants';
 import authService from '../../services/auth/index';
 import axios from 'axios';
 import queryString from 'query-string';
+const BASE_URL = 'http://localhost:3000';
+// const BASE_URL = 'https://magic8-kapusta.netlify.app';
 
 // import {
 //   UploadFileService,
@@ -127,7 +129,7 @@ const googleRedirect = async (req, res) => {
     await repositoryUsers.updateVerification(createdUser.id, true);
     return res.redirect(
       // `https://magic8-kapusta.netlify.app/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}&balance=${createdUser.balance}`,
-      `http://localhost:3000/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}&balance=${createdUser.balance}`,
+      `${BASE_URL}/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}&balance=${createdUser.balance}`,
     );
   }
   const userInDB = await authService.getUserFromGoogle(email);
@@ -136,7 +138,7 @@ const googleRedirect = async (req, res) => {
 
   return res.redirect(
     // `https://magic8-kapusta.netlify.app/google?email=${userInDB.email}&avatarURL=${userInDB.avatarURL}&token=${accessToken}&balance=${userInDB.balance}`,
-    `http://localhost:3000/google?email=${userInDB.email}&avatarURL=${userInDB.avatarURL}&token=${accessToken}&balance=${userInDB.balance}`,
+    `${BASE_URL}/google?email=${userInDB.email}&avatarURL=${userInDB.avatarURL}&token=${accessToken}&balance=${userInDB.balance}`,
   );
 };
 
@@ -208,11 +210,7 @@ const verifyUser = async (req, res, _next) => {
   const getUserFromToken = await repositoryUsers.findByVerifyToken(verifyToken);
   if (getUserFromToken) {
     await repositoryUsers.updateVerification(getUserFromToken.id, true);
-    return res.status(HttpCode.OK).json({
-      status: 'success',
-      code: HttpCode.OK,
-      data: { message: 'Success' },
-    });
+    return res.redirect(`${BASE_URL}/greeting`);
   }
   res.status(HttpCode.BAD_REQUEST).json({
     status: 'bad request',
