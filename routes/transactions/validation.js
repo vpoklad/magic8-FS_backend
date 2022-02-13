@@ -32,7 +32,6 @@ const queryParamsSchema = Joi.object({
   skip: Joi.number().min(0).optional(),
   sortBy: Joi.string()
     .valid(
-      'name',
       'typeOfTransaction',
       'category',
       'date',
@@ -44,7 +43,6 @@ const queryParamsSchema = Joi.object({
     .optional(),
   sortByDesc: Joi.string()
     .valid(
-      'name',
       'typeOfTransaction',
       'category',
       'date',
@@ -58,7 +56,7 @@ const queryParamsSchema = Joi.object({
     // eslint-disable-next-line prefer-regex-literals
     .pattern(
       new RegExp(
-        '(name|typeOfTransaction|category|date|year|month)\\|?(name|typeOfTransaction|category|date|year|month)',
+        '(typeOfTransaction|category|date|year|month)\\|?(typeOfTransaction|category|date|year|month)',
       ),
     )
     .optional(),
