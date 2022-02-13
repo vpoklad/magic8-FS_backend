@@ -56,8 +56,8 @@ const addTransaction = async (userId, body) => {
 // const updateTransaction = async userId => {
 //   // const body = await Transaction.findOne({ category: 'salary', owner: userId });
 //   const transaction = await Transaction.updateMany(
-//     { category: 'hobby', owner: userId },
-//     { $set: { categoryLabel: `СПОРТ, ХОБІ` } },
+//     { category: 'bills', owner: userId },
+//     { $set: { categoryLabel: `КОМУНАЛКА, ЗВ'ЯЗОК` } },
 //     // { new: true },
 //   );
 //   return transaction;
@@ -78,6 +78,7 @@ const getExpenseTransaction = async (id, body) => {
       },
     },
     { $group: { _id: '$month', totalExpense: { $sum: '$sum' } } },
+    { $project: { totalExpense: { $round: ['$totalExpense', 2] } } },
     { $sort: { _id: -1 } },
   ]);
   return expenses;
@@ -98,6 +99,7 @@ const getIncomeTransaction = async (id, body) => {
       },
     },
     { $group: { _id: '$month', totalIncome: { $sum: '$sum' } } },
+    { $project: { totalIncome: { $round: ['$totalIncome', 2] } } },
     { $sort: { _id: -1 } },
   ]);
   return incomes;
@@ -118,6 +120,7 @@ const getDetailedTransaction = async (id, body) => {
         total: { $sum: '$sum' },
       },
     },
+    { $project: { total: { $round: ['$total', 2] } } },
     { $sort: { _id: 1 } },
   ]);
 
@@ -134,10 +137,10 @@ const getDetailedTransaction = async (id, body) => {
           category: '$category',
           categoryLabel: '$categoryLabel',
         },
-
         total: { $sum: '$sum' },
       },
     },
+    { $project: { total: { $round: ['$total', 2] } } },
   ]);
 
   const detailedDescriptionStatistic = await Transaction.aggregate([
@@ -156,6 +159,7 @@ const getDetailedTransaction = async (id, body) => {
         total: { $sum: '$sum' },
       },
     },
+    { $project: { total: { $round: ['$total', 2] } } },
     { $sort: { total: -1 } },
   ]);
 
