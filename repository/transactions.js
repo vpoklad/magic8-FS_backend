@@ -1,6 +1,22 @@
 import Transaction from '../model/transaction';
+import UsersRepository from '../repository/user';
 import mongoose from 'mongoose';
 const { Types } = mongoose;
+
+const months = [
+  'СІЧЕНЬ',
+  'ЛЮТИЙ',
+  'БЕРЕЗЕНЬ',
+  'КВІТЕНЬ',
+  'ТРАВЕНЬ',
+  'ЧЕРВЕНЬ',
+  'ЛИПЕНЬ',
+  'СЕРПЕНЬ',
+  'ВЕРЕСЕНЬ',
+  'ЖОВТЕНЬ',
+  'ЛИСТОПАД',
+  'ГРУДЕНЬ',
+];
 
 const transactionsList = async (
   userId,
@@ -65,6 +81,9 @@ const addTransaction = async (userId, body) => {
 
 const getExpenseTransaction = async (id, body) => {
   const { year, month } = body;
+  const user = await UsersRepository.findById(Types.ObjectId(id));
+  const date = user.createdAt;
+  const yearReg = Number(date.getFullYear());
   const minMonth = Math.max(0, month - 5);
   const expenses = await Transaction.aggregate([
     {
@@ -78,7 +97,12 @@ const getExpenseTransaction = async (id, body) => {
       },
     },
     { $group: { _id: '$month', totalExpense: { $sum: '$sum' } } },
-    { $project: { totalExpense: { $round: ['$totalExpense', 2] } } },
+    {
+      $project: {
+        month: '$_id',
+        totalExpense: { $round: ['$totalExpense', 2] },
+      },
+    },
     { $sort: { _id: -1 } },
   ]);
   return expenses;
@@ -99,7 +123,12 @@ const getIncomeTransaction = async (id, body) => {
       },
     },
     { $group: { _id: '$month', totalIncome: { $sum: '$sum' } } },
-    { $project: { totalIncome: { $round: ['$totalIncome', 2] } } },
+    {
+      $project: {
+        month: months[Number('$_id')],
+        totalIncome: { $round: ['$totalIncome', 2] },
+      },
+    },
     { $sort: { _id: -1 } },
   ]);
   return incomes;
