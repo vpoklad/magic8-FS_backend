@@ -99,7 +99,7 @@ const getExpenseTransaction = async (id, body) => {
     { $group: { _id: '$month', totalExpense: { $sum: '$sum' } } },
     {
       $project: {
-        month: months['$_id'],
+        month: '$_id',
         totalExpense: { $round: ['$totalExpense', 2] },
       },
     },

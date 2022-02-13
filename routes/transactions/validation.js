@@ -11,6 +11,7 @@ const addTransactionSchema = Joi.object({
   month: Joi.number().optional(),
   day: Joi.number().optional(),
   typeOfTransaction: Joi.bool().required(),
+  categoryLabel: Joi.string().required(),
 });
 
 // const patchingTransactionSchema = Joi.object({
@@ -30,16 +31,32 @@ const queryParamsSchema = Joi.object({
   limit: Joi.string().pattern(regLimit).optional(),
   skip: Joi.number().min(0).optional(),
   sortBy: Joi.string()
-    .valid('name', 'typeOfTransaction', 'category', 'date', 'year', 'month')
+    .valid(
+      'typeOfTransaction',
+      'category',
+      'date',
+      'year',
+      'month',
+      'categoryLabel',
+      'description',
+    )
     .optional(),
   sortByDesc: Joi.string()
-    .valid('name', 'typeOfTransaction', 'category', 'date', 'year', 'month')
+    .valid(
+      'typeOfTransaction',
+      'category',
+      'date',
+      'year',
+      'month',
+      'categoryLabel',
+      'description',
+    )
     .optional(),
   filter: Joi.string()
     // eslint-disable-next-line prefer-regex-literals
     .pattern(
       new RegExp(
-        '(name|typeOfTransaction|category|date|year|month)\\|?(name|typeOfTransaction|category|date|year|month)',
+        '(typeOfTransaction|category|date|year|month)\\|?(typeOfTransaction|category|date|year|month)',
       ),
     )
     .optional(),

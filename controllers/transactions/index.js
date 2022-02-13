@@ -68,10 +68,17 @@ const createTransaction = async (req, res, next) => {
     ? await AuthService.setBalance(userId, balance - sumOfTransaction)
     : await AuthService.setBalance(userId, balance + sumOfTransaction);
 
+  const newBalance = await AuthService.getBalance(userId);
+
+  const { total, transactions } = await repositoryTransactions.transactionsList(
+    userId,
+    req.query,
+  );
+
   res.status(HttpCode.CREATED).json({
     status: 'success',
     code: HttpCode.OK,
-    data: { transaction: newTransaction },
+    data: { balance: newBalance, total, transactions },
   });
 };
 
