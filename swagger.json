@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "2.0.0",
+    "version": "1.2.0",
     "title": "Swagger for kapusta",
     "description": "Kapusta swagger documentation",
     "license": {
@@ -259,9 +259,45 @@
       }
     },
     "/api/users/balance": {
+      "patch": {
+        "tags": ["Auth"],
+        "summary": "User balance",
+        "parameters": [],
+        "requestBody": {
+          "description": "Balance object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BalanceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      },
       "get": {
         "tags": ["Auth"],
-        "summary": "User authentification",
+        "summary": "User balance",
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
@@ -370,6 +406,112 @@
           }
         }
       }
+    },
+
+    "/api/stats/expense": {
+      "get": {
+        "tags": ["Stats"],
+        "summary": "User statistics",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "200": {
+            "description": "Success operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpensesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotAuthorized"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/stats/income": {
+      "get": {
+        "tags": ["Stats"],
+        "summary": "User statistics",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "200": {
+            "description": "Success operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IncomesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotAuthorized"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/stats/detailed": {
+      "get": {
+        "tags": ["Stats"],
+        "summary": "User statistics",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "200": {
+            "description": "Success operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotAuthorized"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
     }
   },
 
@@ -423,14 +565,24 @@
           }
         }
       },
-
       "LogOutRequest": {},
-
+      "BalanceRequest": {
+        "type": "object",
+        "required": "balance",
+        "properties": {
+          "balance": {
+            "type": "number",
+            "description": "User's balance",
+            "example": 1100.55
+          }
+        }
+      },
       "TransactionRequest": {
         "type": "object",
         "required": [
           "description",
           "category",
+          "categoryLabel",
           "sum",
           "date",
           "year",
@@ -447,6 +599,11 @@
           "category": {
             "type": "string",
             "description": "Category transaction",
+            "example": "foods"
+          },
+          "categoryLabel": {
+            "type": "string",
+            "description": "Category label transaction",
             "example": "foods"
           },
           "sum": {
@@ -543,7 +700,24 @@
           }
         }
       },
-
+      "LogOutResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status of request",
+            "example": "success"
+          },
+          "code": {
+            "type": "number",
+            "description": "Status of request",
+            "example": "204"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      },
       "RepeatEmailResponse": {
         "type": "object",
         "properties": {
@@ -642,6 +816,11 @@
                     "type": "string",
                     "description": "Category transaction",
                     "example": "foods"
+                  },
+                  "categoryLabel": {
+                    "type": "string",
+                    "description": "Category label transaction",
+                    "example": "ПРОДУКТИ"
                   },
                   "sum": {
                     "type": "number",

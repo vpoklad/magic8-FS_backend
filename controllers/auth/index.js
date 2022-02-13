@@ -3,6 +3,8 @@ import { HttpCode } from '../../lib/constants';
 import authService from '../../services/auth/index';
 import axios from 'axios';
 import queryString from 'query-string';
+const BASE_URL = 'http://localhost:3000';
+// const BASE_URL = 'https://magic8-kapusta.netlify.app';
 
 // import {
 //   UploadFileService,
@@ -127,7 +129,7 @@ const googleRedirect = async (req, res) => {
     await repositoryUsers.updateVerification(createdUser.id, true);
     return res.redirect(
       // `https://magic8-kapusta.netlify.app/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}&balance=${createdUser.balance}`,
-      `http://localhost:3000/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}`,
+      `${BASE_URL}/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}&balance=${createdUser.balance}`,
     );
   }
   const userInDB = await authService.getUserFromGoogle(email);
@@ -136,7 +138,7 @@ const googleRedirect = async (req, res) => {
 
   return res.redirect(
     // `https://magic8-kapusta.netlify.app/google?email=${userInDB.email}&avatarURL=${userInDB.avatarURL}&token=${accessToken}&balance=${userInDB.balance}`,
-    `http://localhost:3000/google?email=${userInDB.email}&avatarURL=${userInDB.avatarURL}&token=${accessToken}`,
+    `${BASE_URL}/google?email=${userInDB.email}&avatarURL=${userInDB.avatarURL}&token=${accessToken}&balance=${userInDB.balance}`,
   );
 };
 
@@ -156,10 +158,19 @@ const getCurrent = (req, res, _next) => {
   });
 };
 
+const getBalance = (req, res, _next) => {
+  const { balance } = req.user;
+  res.status(HttpCode.OK).json({
+    status: 'success',
+    code: HttpCode.OK,
+    data: { balance },
+  });
+};
+
 const updateBalance = async (req, res, _next) => {
   const { id: userId } = req.user;
   const { balance } = req.body;
-  console.log(typeof balance);
+  // console.log(typeof balance);
   if (!balance) {
     return res.status(HttpCode.NOT_FOUND).json({
       status: 'error',
@@ -191,7 +202,7 @@ const verifyUser = async (req, res, _next) => {
     const token = await authService.getToken(getUserFromToken);
     await authService.setToken(getUserFromToken.id, token);
     return res.redirect(
-      `http://localhost:3000/google?email=${getUserFromToken.email}&token=${token}`,
+      `${BASE_URL}/google?email=${getUserFromToken.email}&token=${token}`,
     );
   }
   res.status(HttpCode.BAD_REQUEST).json({
@@ -243,7 +254,7 @@ export {
   getCurrent,
   googleAuth,
   googleRedirect,
-  // getBalance,
+  getBalance,
   updateBalance,
   // uploadAvatar,
   repeatEmailForVerifyUser,
