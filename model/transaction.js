@@ -37,7 +37,6 @@ const transactionSchema = new Schema(
       type: String,
       default: Date.now,
       max: Date.now,
-
       // до вияснення..
     },
     year: { type: Number, default: () => date().year },
