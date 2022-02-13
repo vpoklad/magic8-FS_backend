@@ -6,10 +6,6 @@ const { Schema, model } = mongooseService;
 
 const userSchema = new Schema(
   {
-    name: {
-      type: String,
-      default: 'Guest',
-    },
     email: {
       type: String,
       lowercase: true,
