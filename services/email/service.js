@@ -18,7 +18,7 @@ export default class EmailService {
     }
   }
 
-  createEmailTemplate(username, verificationToken) {
+  createEmailTemplate(verificationToken) {
     const mailGenerator = new Mailgen({
       theme: 'default',
       product: {
@@ -29,28 +29,28 @@ export default class EmailService {
 
     const email = {
       body: {
-        name: username,
+        // name: 'користувач додатку Kapu$ta',
         intro: 'Вітаємо! Раді вас бачити!',
         action: {
           instructions:
             'Щоб почати користуватися сервісом Kapu$ta, натисніть на кнопку:',
           button: {
-            color: '#22BC66', // optional color of button
-            text: 'Confirm your account',
+            color: '#FF751D',
+            text: 'Підтвердити вашу пошту',
             link: `${this.link}/api/users/verify/${verificationToken}`,
           },
         },
-        outro: `Або скопіюйте це посилання в строку браузера: ${this.link}/api/users/verify/${verificationToken}`,
+        outro: `Або скопіюйте це посилання в рядок браузера: ${this.link}/api/users/verify/${verificationToken}`,
       },
     };
     return mailGenerator.generate(email);
   }
 
-  async sendVerifyEmail(email, username, verificationToken) {
-    const emailBody = this.createEmailTemplate(username, verificationToken);
+  async sendVerifyEmail(email, verificationToken) {
+    const emailBody = this.createEmailTemplate(verificationToken);
     const message = {
       to: email,
-      subject: 'Verify email',
+      subject: 'Підтвердження пошти',
       html: emailBody,
     };
     try {

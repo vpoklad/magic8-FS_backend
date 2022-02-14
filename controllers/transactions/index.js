@@ -64,7 +64,7 @@ const createTransaction = async (req, res, next) => {
     });
   }
 
-  !body.typeOfTransaction
+  !newTransaction.typeOfTransaction
     ? await AuthService.setBalance(userId, balance - sumOfTransaction)
     : await AuthService.setBalance(userId, balance + sumOfTransaction);
 
@@ -99,7 +99,7 @@ const removeTransaction = async (req, res, next) => {
 
   const balance = await AuthService.getBalance(userId);
   const sumOfTransaction = Math.abs(transaction.sum);
-  !body.typeOfTransaction
+  !transaction.typeOfTransaction
     ? await AuthService.setBalance(userId, balance + sumOfTransaction)
     : await AuthService.setBalance(userId, balance - sumOfTransaction);
 
@@ -132,7 +132,6 @@ const removeTransaction = async (req, res, next) => {
 
 export {
   getTransactions,
-  // getTransactionById,
   createTransaction,
   removeTransaction,
   // updateTransaction,

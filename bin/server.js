@@ -1,5 +1,3 @@
-// import { mkdir } from "fs/promises";
-
 import app from '../app';
 import db from '../lib/db-connection';
 
