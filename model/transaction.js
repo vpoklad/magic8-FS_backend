@@ -4,8 +4,8 @@ const { Schema, SchemaTypes, model } = mongoose;
 function date() {
   const newDate = new Date();
   const year = Number(newDate.getFullYear());
-  // const month = Number(newDate.getMonth());
-  const month = Math.round(Math.random() * 11);
+  const month = Number(newDate.getMonth());
+  // const month = Math.round(Math.random() * 11);
   const day = Number(newDate.getDay());
 
   return { year, month, day };
@@ -36,8 +36,7 @@ const transactionSchema = new Schema(
     date: {
       type: String,
       default: Date.now,
-      max: Date.now,
-      // до вияснення..
+      // max: Date.now,
     },
     year: { type: Number, default: () => date().year },
     month: { type: Number, default: () => date().month },

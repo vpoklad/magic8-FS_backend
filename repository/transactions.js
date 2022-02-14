@@ -1,29 +1,14 @@
 import Transaction from '../model/transaction';
 import UsersRepository from '../repository/user';
+import months from '../lib/months';
 import mongoose from 'mongoose';
-import months from '../lib/month';
 
-const { Types } = mongoose;
-
-const transactionsList = async (
-  userId,
-  { sortBy, sortByDesc, filter, limit = 10, skip = 0 },
-) => {
-  let sortCriteria = null;
+const transactionsList = async (userId, { limit = 50, skip = 0 }) => {
   const total = await Transaction.find({ owner: userId }).countDocuments();
-  let transactions = Transaction.find({ owner: userId }).populate({
-    path: 'owner',
-    select: 'name email role',
-  });
-  if (sortBy) {
-    sortCriteria = { [`${sortBy}`]: 1 };
-  }
-  if (sortByDesc) {
-    sortCriteria = { [`${sortByDesc}`]: -1 };
-  }
-  if (filter) {
-    transactions = transactions.select(filter.split('|').join(' '));
-  }
+  let transactions = Transaction.find({ owner: userId });
+
+  const sortCriteria = { year: -1, month: -1, day: -1 };
+
   transactions = await transactions
     .skip(Number(skip))
     .limit(Number(limit))
@@ -59,6 +44,9 @@ const getExpenseTransaction = async (id, body) => {
   const user = await UsersRepository.findById(Types.ObjectId(id));
   const date = user.createdAt;
   const yearReg = Number(date.getFullYear());
+  const monthReg = Number(date.getMonth());
+  const minM = yearReg === year ? monthReg : 0;
+  // const minMonth = Math.max(minM, month - 5);
   const minMonth = Math.max(0, month - 5);
   const expenses = await Transaction.aggregate([
     {
@@ -74,7 +62,7 @@ const getExpenseTransaction = async (id, body) => {
     { $group: { _id: '$month', totalExpense: { $sum: '$sum' } } },
     {
       $project: {
-        month: '$_id',
+        month: { $arrayElemAt: [months, '$_id'] },
         totalExpense: { $round: ['$totalExpense', 2] },
       },
     },
@@ -100,7 +88,7 @@ const getIncomeTransaction = async (id, body) => {
     { $group: { _id: '$month', totalIncome: { $sum: '$sum' } } },
     {
       $project: {
-        month: months[Number('$_id')],
+        month: { $arrayElemAt: [months, '$_id'] },
         totalIncome: { $round: ['$totalIncome', 2] },
       },
     },
