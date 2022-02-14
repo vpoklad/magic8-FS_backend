@@ -3,20 +3,11 @@ import { HttpCode } from '../../lib/constants';
 import authService from '../../services/auth/index';
 import axios from 'axios';
 import queryString from 'query-string';
-const BASE_URL = 'http://localhost:3000';
-// const BASE_URL = 'https://magic8-kapusta.netlify.app';
-
-// import {
-//   UploadFileService,
-//   CloudFileStorage,
-//   LocalFileStorage,
-// } from "../../service/file-storage";
-import {
-  // SenderNodemailer,
-  SenderSendGrid,
-  EmailService,
-} from '../../services/email/index';
+import { SenderSendGrid, EmailService } from '../../services/email/index';
 import repositoryUsers from '../../repository/user';
+
+// const BASE_URL = 'https://magic8-kapusta.netlify.app';
+const BASE_URL = 'http://localhost:3000';
 
 const registration = async (req, res, next) => {
   try {
@@ -55,8 +46,15 @@ const registration = async (req, res, next) => {
 
 const login = async (req, res, _next) => {
   const { email, password } = req.body;
+  if (password === null) {
+    return res.status(HttpCode.CONFLICT).json({
+      status: 'error',
+      code: HttpCode.CONFLICT,
+      message: 'Invalid credentials. Please try login with Google.',
+    });
+  }
   const user = await authService.getUser(email, password);
-  if (!user || password === null) {
+  if (!user) {
     return res.status(HttpCode.UNAUTHORIZED).json({
       status: 'error',
       code: HttpCode.UNAUTHORIZED,
@@ -256,7 +254,6 @@ export {
   googleRedirect,
   getBalance,
   updateBalance,
-  // uploadAvatar,
   repeatEmailForVerifyUser,
   verifyUser,
 };
