@@ -2,7 +2,7 @@ import AuthService from '../../services/auth';
 import repositoryTransactions from '../../repository/transactions';
 import { HttpCode } from '../../lib/constants';
 
-const getTransactions = async (req, res, next) => {
+const getTransactions = async (req, res, _next) => {
   const { id: userId } = req.user;
   const transactions = await repositoryTransactions.transactionsList(
     userId,
