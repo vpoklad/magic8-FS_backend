@@ -3,20 +3,11 @@ import { HttpCode } from '../../lib/constants';
 import authService from '../../services/auth/index';
 import axios from 'axios';
 import queryString from 'query-string';
+import { SenderSendGrid, EmailService } from '../../services/email/index';
+import repositoryUsers from '../../repository/user';
+
 const BASE_URL = 'http://localhost:3000';
 // const BASE_URL = 'https://magic8-kapusta.netlify.app';
-
-// import {
-//   UploadFileService,
-//   CloudFileStorage,
-//   LocalFileStorage,
-// } from "../../service/file-storage";
-import {
-  // SenderNodemailer,
-  SenderSendGrid,
-  EmailService,
-} from '../../services/email/index';
-import repositoryUsers from '../../repository/user';
 
 const registration = async (req, res, next) => {
   try {

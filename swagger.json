@@ -916,6 +916,120 @@
           }
         }
       },
+
+      "ExpensesResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status of request",
+            "example": "success"
+          },
+          "code": {
+            "type": "number",
+            "description": "Status of request",
+            "example": "200"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "number",
+                  "description": "Number of month",
+                  "example": 2
+                },
+                "month": {
+                  "type": "string",
+                  "description": "Name of month",
+                  "example": "ЛЮТИЙ"
+                },
+                "totalExpense": {
+                  "type": "number",
+                  "description": "Total summa",
+                  "example": 16361.48
+                }
+              }
+            },
+
+            "example": [
+              {
+                "_id": 2,
+                "month": "БЕРЕЗЕНЬ",
+                "totalExpense": 43850.76
+              },
+              {
+                "_id": 1,
+                "month": "ЛЮТИЙ",
+                "totalExpense": 16361.48
+              },
+              {
+                "_id": 0,
+                "month": "СІЧЕНЬ",
+                "totalExpense": 11840.41
+              }
+            ]
+          }
+        }
+      },
+      "IncomesResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status of request",
+            "example": "success"
+          },
+          "code": {
+            "type": "number",
+            "description": "Status of request",
+            "example": "200"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "number",
+                  "description": "Number of month",
+                  "example": 2
+                },
+                "month": {
+                  "type": "string",
+                  "description": "Name of month",
+                  "example": "ЛЮТИЙ"
+                },
+                "totalIncome": {
+                  "type": "number",
+                  "description": "Total summa",
+                  "example": 16361.48
+                }
+              }
+            },
+
+            "example": [
+              {
+                "_id": 2,
+                "month": "БЕРЕЗЕНЬ",
+                "totalIncome": 43850.76
+              },
+              {
+                "_id": 1,
+                "month": "ЛЮТИЙ",
+                "totalIncome": 16361.48
+              },
+              {
+                "_id": 0,
+                "month": "СІЧЕНЬ",
+                "totalIncome": 11840.41
+              }
+            ]
+          }
+        }
+      },
+
       "NotAuthorized": {
         "type": "object",
         "properties": {

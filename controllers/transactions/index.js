@@ -20,25 +20,6 @@ const getTransactions = async (req, res, next) => {
     .json({ status: 'success', code: HttpCode.OK, data: transactions });
 };
 
-// const getTransactionById = async (req, res, next) => {
-//   const { id } = req.params;
-//   const { id: userId } = req.user;
-//   const transaction = await repositoryTransactions.getTransactionById(
-//     userId,
-//     id
-//   );
-//   if (!transaction) {
-//     res.status(HttpCode.NOT_FOUND).json({
-//       status: "error",
-//       code: HttpCode.NOT_FOUND,
-//       message: "Not found",
-//     });
-//   }
-//   res
-//     .status(200)
-//     .json({ status: "success", code: HttpCode.OK, data: { transaction } });
-// };
-
 const createTransaction = async (req, res, next) => {
   const { id: userId } = req.user;
   const body = req.body;
@@ -64,7 +45,7 @@ const createTransaction = async (req, res, next) => {
     });
   }
 
-  !body.typeOfTransaction
+  !newTransaction.typeOfTransaction
     ? await AuthService.setBalance(userId, balance - sumOfTransaction)
     : await AuthService.setBalance(userId, balance + sumOfTransaction);
 
@@ -99,7 +80,7 @@ const removeTransaction = async (req, res, next) => {
 
   const balance = await AuthService.getBalance(userId);
   const sumOfTransaction = Math.abs(transaction.sum);
-  !body.typeOfTransaction
+  !transaction.typeOfTransaction
     ? await AuthService.setBalance(userId, balance + sumOfTransaction)
     : await AuthService.setBalance(userId, balance - sumOfTransaction);
 
@@ -132,7 +113,6 @@ const removeTransaction = async (req, res, next) => {
 
 export {
   getTransactions,
-  // getTransactionById,
   createTransaction,
   removeTransaction,
   // updateTransaction,

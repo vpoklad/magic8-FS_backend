@@ -40,7 +40,7 @@ export default class EmailService {
             link: `${this.link}/api/users/verify/${verificationToken}`,
           },
         },
-        outro: `Або скопіюйте це посилання в строку браузера: ${this.link}/api/users/verify/${verificationToken}`,
+        outro: `Або скопіюйте це посилання в рядок браузера: ${this.link}/api/users/verify/${verificationToken}`,
       },
     };
     return mailGenerator.generate(email);

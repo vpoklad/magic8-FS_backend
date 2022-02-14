@@ -15,7 +15,7 @@ const transactionSchema = new Schema(
   {
     description: {
       type: String,
-      required: [true, 'Set description for transaction'], // по мекету "Описание"
+      required: [true, 'Set description for transaction'],
     },
     category: {
       type: String,
@@ -23,7 +23,7 @@ const transactionSchema = new Schema(
     },
     categoryLabel: {
       type: String,
-      uppercase: true,
+      // uppercase: true,
       required: [true, 'Set categoryLabel for transaction'],
     },
     sum: {
@@ -36,8 +36,7 @@ const transactionSchema = new Schema(
     date: {
       type: String,
       default: Date.now,
-      max: Date.now,
-      // до вияснення..
+      // max: Date.now,
     },
     year: { type: Number, default: () => date().year },
     month: { type: Number, default: () => date().month },
@@ -45,7 +44,7 @@ const transactionSchema = new Schema(
 
     typeOfTransaction: {
       type: Boolean,
-      default: false, // видатки - false, доходи - true
+      default: false,
     },
     owner: {
       type: SchemaTypes.ObjectId,

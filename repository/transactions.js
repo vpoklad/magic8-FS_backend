@@ -1,22 +1,8 @@
 import Transaction from '../model/transaction';
 import UsersRepository from '../repository/user';
+import months from '../lib/months';
 import mongoose from 'mongoose';
 const { Types } = mongoose;
-
-const months = [
-  'СІЧЕНЬ',
-  'ЛЮТИЙ',
-  'БЕРЕЗЕНЬ',
-  'КВІТЕНЬ',
-  'ТРАВЕНЬ',
-  'ЧЕРВЕНЬ',
-  'ЛИПЕНЬ',
-  'СЕРПЕНЬ',
-  'ВЕРЕСЕНЬ',
-  'ЖОВТЕНЬ',
-  'ЛИСТОПАД',
-  'ГРУДЕНЬ',
-];
 
 const transactionsList = async (
   userId,
@@ -43,18 +29,6 @@ const transactionsList = async (
     .sort(sortCriteria);
   return { total, transactions };
 };
-
-// const getTransactionById = async (userId, transactionId) => {
-//   const transaction = await Transaction.findOne({
-//     _id: transactionId,
-//     owner: userId,
-//   })
-//   // .populate({
-//   //   path: "owner",
-//   //   select: "name email role",
-//   // });
-//   return transaction;
-// };
 
 const removeTransaction = async (userId, transactionId) => {
   const transaction = await Transaction.findOneAndRemove({
@@ -84,6 +58,9 @@ const getExpenseTransaction = async (id, body) => {
   const user = await UsersRepository.findById(Types.ObjectId(id));
   const date = user.createdAt;
   const yearReg = Number(date.getFullYear());
+  const monthReg = Number(date.getMonth());
+  const minM = yearReg === year ? monthReg : 0;
+  // const minMonth = Math.max(minM, month - 5);
   const minMonth = Math.max(0, month - 5);
   const expenses = await Transaction.aggregate([
     {
@@ -99,7 +76,7 @@ const getExpenseTransaction = async (id, body) => {
     { $group: { _id: '$month', totalExpense: { $sum: '$sum' } } },
     {
       $project: {
-        month: '$_id',
+        month: { $arrayElemAt: [months, '$_id'] },
         totalExpense: { $round: ['$totalExpense', 2] },
       },
     },
@@ -125,7 +102,7 @@ const getIncomeTransaction = async (id, body) => {
     { $group: { _id: '$month', totalIncome: { $sum: '$sum' } } },
     {
       $project: {
-        month: months[Number('$_id')],
+        month: { $arrayElemAt: [months, '$_id'] },
         totalIncome: { $round: ['$totalIncome', 2] },
       },
     },
@@ -201,7 +178,6 @@ const getDetailedTransaction = async (id, body) => {
 
 export default {
   transactionsList,
-  // getTransactionById,
   removeTransaction,
   addTransaction,
   // updateTransaction,
