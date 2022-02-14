@@ -19,35 +19,11 @@ const regLimit = /\d+/;
 const queryParamsSchema = Joi.object({
   limit: Joi.string().pattern(regLimit).optional(),
   skip: Joi.number().min(0).optional(),
-  sortBy: Joi.string()
-    .valid(
-      'typeOfTransaction',
-      'category',
-      'date',
-      'year',
-      'month',
-      'categoryLabel',
-      'description',
-    )
-    .optional(),
-  sortByDesc: Joi.string()
-    .valid(
-      'typeOfTransaction',
-      'category',
-      'date',
-      'year',
-      'month',
-      'categoryLabel',
-      'description',
-    )
-    .optional(),
+  sortBy: Joi.string().valid('date', 'year', 'month').optional(),
+  sortByDesc: Joi.string().valid('date', 'year', 'month').optional(),
   filter: Joi.string()
     // eslint-disable-next-line prefer-regex-literals
-    .pattern(
-      new RegExp(
-        '(typeOfTransaction|category|date|year|month)\\|?(typeOfTransaction|category|date|year|month)',
-      ),
-    )
+    .pattern(new RegExp('(date|year|month)\\|?(date|year|month)'))
     .optional(),
 });
 
