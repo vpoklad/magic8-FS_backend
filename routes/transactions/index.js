@@ -9,7 +9,6 @@ import {
   getTransactions,
   createTransaction,
   removeTransaction,
-  // updateTransaction,
 } from '../../controllers/transactions/index';
 import { guard } from '../../middlewares/guard';
 

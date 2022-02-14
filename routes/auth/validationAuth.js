@@ -2,12 +2,6 @@ import Joi from 'joi';
 import { HttpCode } from '../../lib/constants';
 
 const addAuthSchema = Joi.object({
-  name: Joi.string()
-    .min(3)
-    .max(40)
-    .pattern(/^[A-z]+(?:\s+[A-z]+)*$|^[А-я]+(?:\s+[А-я]+)*$/)
-    .default('Guest')
-    .optional(),
   email: Joi.string()
     .trim()
     .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'ua'] } })

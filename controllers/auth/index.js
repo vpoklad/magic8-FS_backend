@@ -6,8 +6,8 @@ import queryString from 'query-string';
 import { SenderSendGrid, EmailService } from '../../services/email/index';
 import repositoryUsers from '../../repository/user';
 
-const BASE_URL = 'http://localhost:3000';
 // const BASE_URL = 'https://magic8-kapusta.netlify.app';
+const BASE_URL = 'http://localhost:3000';
 
 const registration = async (req, res, next) => {
   try {
@@ -29,7 +29,6 @@ const registration = async (req, res, next) => {
 
     const isMessageSend = await emailService.sendVerifyEmail(
       email,
-      userData.name,
       userData.verificationToken,
     );
     delete userData.verificationToken;
@@ -46,8 +45,15 @@ const registration = async (req, res, next) => {
 
 const login = async (req, res, _next) => {
   const { email, password } = req.body;
+  if (password === null) {
+    return res.status(HttpCode.CONFLICT).json({
+      status: 'error',
+      code: HttpCode.CONFLICT,
+      message: 'Invalid credentials. Please try login with Google.',
+    });
+  }
   const user = await authService.getUser(email, password);
-  if (!user || password === null) {
+  if (!user) {
     return res.status(HttpCode.UNAUTHORIZED).json({
       status: 'error',
       code: HttpCode.UNAUTHORIZED,
@@ -247,7 +253,6 @@ export {
   googleRedirect,
   getBalance,
   updateBalance,
-  // uploadAvatar,
   repeatEmailForVerifyUser,
   verifyUser,
 };

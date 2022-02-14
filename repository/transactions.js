@@ -2,7 +2,6 @@ import Transaction from '../model/transaction';
 import UsersRepository from '../repository/user';
 import months from '../lib/months';
 import mongoose from 'mongoose';
-const { Types } = mongoose;
 
 const transactionsList = async (userId, { limit = 50, skip = 0 }) => {
   const total = await Transaction.find({ owner: userId }).countDocuments();
@@ -47,8 +46,8 @@ const getExpenseTransaction = async (id, body) => {
   const yearReg = Number(date.getFullYear());
   const monthReg = Number(date.getMonth());
   const minM = yearReg === year ? monthReg : 0;
-  const minMonth = Math.max(minM, month - 5);
-  // const minMonth = Math.max(0, month - 5);
+  // const minMonth = Math.max(minM, month - 5);
+  const minMonth = Math.max(0, month - 5);
   const expenses = await Transaction.aggregate([
     {
       $match: {
@@ -152,8 +151,7 @@ const getDetailedTransaction = async (id, body) => {
         total: { $sum: '$sum' },
       },
     },
-    { $project: { total: { $round: ['$total', 2] } } },
-    { $sort: { total: -1 } },
+    { $project: { total: { $round: ['$total', 0] } } },
   ]);
 
   return {

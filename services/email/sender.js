@@ -1,5 +1,4 @@
 import sgMail from '@sendgrid/mail';
-// import nodemailer from "nodemailer";
 
 export class SenderSendGrid {
   async send(message) {
