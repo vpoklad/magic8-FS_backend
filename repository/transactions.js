@@ -4,25 +4,12 @@ import months from '../lib/months';
 import mongoose from 'mongoose';
 const { Types } = mongoose;
 
-const transactionsList = async (
-  userId,
-  { sortBy, sortByDesc, filter, limit = 10, skip = 0 },
-) => {
-  let sortCriteria = null;
+const transactionsList = async (userId, { limit = 20, skip = 0 }) => {
   const total = await Transaction.find({ owner: userId }).countDocuments();
-  let transactions = Transaction.find({ owner: userId }).populate({
-    path: 'owner',
-    select: 'name email role',
-  });
-  if (sortBy) {
-    sortCriteria = { [`${sortBy}`]: 1 };
-  }
-  if (sortByDesc) {
-    sortCriteria = { [`${sortByDesc}`]: -1 };
-  }
-  if (filter) {
-    transactions = transactions.select(filter.split('|').join(' '));
-  }
+  let transactions = Transaction.find({ owner: userId });
+
+  const sortCriteria = { year: -1, month: -1, day: -1 };
+
   transactions = await transactions
     .skip(Number(skip))
     .limit(Number(limit))
@@ -60,8 +47,8 @@ const getExpenseTransaction = async (id, body) => {
   const yearReg = Number(date.getFullYear());
   const monthReg = Number(date.getMonth());
   const minM = yearReg === year ? monthReg : 0;
-  // const minMonth = Math.max(minM, month - 5);
-  const minMonth = Math.max(0, month - 5);
+  const minMonth = Math.max(minM, month - 5);
+  // const minMonth = Math.max(0, month - 5);
   const expenses = await Transaction.aggregate([
     {
       $match: {

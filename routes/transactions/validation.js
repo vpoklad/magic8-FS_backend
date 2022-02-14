@@ -17,6 +17,7 @@ const addTransactionSchema = Joi.object({
 const regLimit = /\d+/;
 
 const queryParamsSchema = Joi.object({
+  day: Joi.string().pattern(regLimit).optional(),
   limit: Joi.string().pattern(regLimit).optional(),
   skip: Joi.number().min(0).optional(),
   sortBy: Joi.string()
