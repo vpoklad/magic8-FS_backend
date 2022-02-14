@@ -1,22 +1,9 @@
 import Transaction from '../model/transaction';
 import UsersRepository from '../repository/user';
 import mongoose from 'mongoose';
-const { Types } = mongoose;
+import months from '../lib/month';
 
-const months = [
-  'СІЧЕНЬ',
-  'ЛЮТИЙ',
-  'БЕРЕЗЕНЬ',
-  'КВІТЕНЬ',
-  'ТРАВЕНЬ',
-  'ЧЕРВЕНЬ',
-  'ЛИПЕНЬ',
-  'СЕРПЕНЬ',
-  'ВЕРЕСЕНЬ',
-  'ЖОВТЕНЬ',
-  'ЛИСТОПАД',
-  'ГРУДЕНЬ',
-];
+const { Types } = mongoose;
 
 const transactionsList = async (
   userId,
@@ -43,18 +30,6 @@ const transactionsList = async (
     .sort(sortCriteria);
   return { total, transactions };
 };
-
-// const getTransactionById = async (userId, transactionId) => {
-//   const transaction = await Transaction.findOne({
-//     _id: transactionId,
-//     owner: userId,
-//   })
-//   // .populate({
-//   //   path: "owner",
-//   //   select: "name email role",
-//   // });
-//   return transaction;
-// };
 
 const removeTransaction = async (userId, transactionId) => {
   const transaction = await Transaction.findOneAndRemove({
@@ -188,8 +163,7 @@ const getDetailedTransaction = async (id, body) => {
         total: { $sum: '$sum' },
       },
     },
-    { $project: { total: { $round: ['$total', 2] } } },
-    { $sort: { total: -1 } },
+    { $project: { total: { $round: ['$total', 0] } } },
   ]);
 
   return {
@@ -201,7 +175,6 @@ const getDetailedTransaction = async (id, body) => {
 
 export default {
   transactionsList,
-  // getTransactionById,
   removeTransaction,
   addTransaction,
   // updateTransaction,

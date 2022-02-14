@@ -15,7 +15,7 @@ const transactionSchema = new Schema(
   {
     description: {
       type: String,
-      required: [true, 'Set description for transaction'], // по мекету "Описание"
+      required: [true, 'Set description for transaction'],
     },
     category: {
       type: String,
@@ -45,7 +45,7 @@ const transactionSchema = new Schema(
 
     typeOfTransaction: {
       type: Boolean,
-      default: false, // видатки - false, доходи - true
+      default: false,
     },
     owner: {
       type: SchemaTypes.ObjectId,

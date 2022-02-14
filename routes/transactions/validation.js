@@ -14,17 +14,6 @@ const addTransactionSchema = Joi.object({
   categoryLabel: Joi.string().required(),
 });
 
-// const patchingTransactionSchema = Joi.object({
-//   name: Joi.string().optional(),
-//   email: Joi.string().optional(),
-//   phone: Joi.string().optional(),
-//   favorite: Joi.bool().optional(),
-// }).or('name', 'email', 'phone');
-
-// const patchingTransactionFavoriteSchema = Joi.object({
-//   favorite: Joi.bool().required(),
-// });
-
 const regLimit = /\d+/;
 
 const queryParamsSchema = Joi.object({
@@ -73,38 +62,12 @@ export const addTransactionValidation = async (req, res, next) => {
   next();
 };
 
-// export const patchingTransactionValidation = async (req, res, next) => {
-//   try {
-//     await patchingTransactionSchema.validateAsync(req.body);
-//   } catch (error) {
-//     const [{ type }] = console.error.details;
-//     if (type === 'object.missing') {
-//       return res.status(400).json({ message: 'missing fields' });
-//     }
-//     return res.status(400).json({ message: error.message.replace(/"/g, '') });
-//   }
-//   next();
-// };
-
 export const idValidation = async (req, res, next) => {
   if (!Types.ObjectId.isValid(req.params.id)) {
     return res.status(400).json({ message: 'Invalid ObjectId' });
   }
   next();
 };
-
-// export const patchingTransactionFavoriteValidation = async (req, res, next) => {
-//   try {
-//     await patchingTransactionFavoriteSchema.validateAsync(req.body);
-//   } catch (error) {
-//     const [{ type }] = console.error.details;
-//     if (type === 'object.missing') {
-//       return res.status(400).json({ message: 'missing field favorite' });
-//     }
-//     return res.status(400).json({ message: error.message.replace(/"/g, '') });
-//   }
-//   next();
-// };
 
 export const queryValidations = async (req, res, next) => {
   try {
