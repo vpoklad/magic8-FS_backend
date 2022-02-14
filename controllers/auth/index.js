@@ -29,7 +29,6 @@ const registration = async (req, res, next) => {
 
     const isMessageSend = await emailService.sendVerifyEmail(
       email,
-      userData.name,
       userData.verificationToken,
     );
     delete userData.verificationToken;

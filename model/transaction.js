@@ -23,7 +23,7 @@ const transactionSchema = new Schema(
     },
     categoryLabel: {
       type: String,
-      uppercase: true,
+      // uppercase: true,
       required: [true, 'Set categoryLabel for transaction'],
     },
     sum: {
