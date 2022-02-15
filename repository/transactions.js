@@ -153,6 +153,7 @@ const getDetailedTransaction = async (id, body) => {
       },
     },
     { $project: { total: { $round: ['$total', 0] } } },
+    { $sort: { total: -1 } },
   ]);
 
   return {
