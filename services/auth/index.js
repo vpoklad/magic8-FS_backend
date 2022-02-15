@@ -10,8 +10,13 @@ class AuthService {
   }
 
   async create(body) {
-    const { id, balance, email, avatarURL, verificationToken } =
-      await UsersRepository.createNewUser(body);
+    const {
+      id,
+      balance,
+      email,
+      avatarURL,
+      verificationToken,
+    } = await UsersRepository.createNewUser(body);
     return { id, balance, email, avatarURL, verificationToken };
   }
 
@@ -31,7 +36,7 @@ class AuthService {
 
   async getBalance(userId) {
     const { balance } = await UsersRepository.findById(userId);
-    return balance;
+    return Number(balance);
   }
 
   async setBalance(userId, balance) {
