@@ -2,6 +2,7 @@ import Transaction from '../model/transaction';
 import UsersRepository from '../repository/user';
 import months from '../lib/months';
 import mongoose from 'mongoose';
+const { Types } = mongoose;
 
 const transactionsList = async (userId, { limit = 50, skip = 0 }) => {
   const total = await Transaction.find({ owner: userId }).countDocuments();
