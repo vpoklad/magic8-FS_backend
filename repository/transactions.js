@@ -1,6 +1,6 @@
+// import UsersRepository from '../repository/user';
 import Transaction from '../model/transaction';
-import UsersRepository from '../repository/user';
-import months from '../lib/months';
+import { getQueryParams, getPipeline } from '../services/transactions';
 import mongoose from 'mongoose';
 const { Types } = mongoose;
 
@@ -40,61 +40,19 @@ const addTransaction = async (userId, body) => {
 //   return transaction;
 // };
 
-const getExpenseTransaction = async (id, body) => {
-  const { year, month } = body;
-  const user = await UsersRepository.findById(Types.ObjectId(id));
-  const date = user.createdAt;
-  const yearReg = Number(date.getFullYear());
-  const monthReg = Number(date.getMonth());
-  const minM = yearReg === year ? monthReg : 0;
-  // const minMonth = Math.max(minM, month - 5);
-  const minMonth = Math.max(0, month - 5);
-  const expenses = await Transaction.aggregate([
-    {
-      $match: {
-        $and: [
-          { owner: Types.ObjectId(id) },
-          { typeOfTransaction: false },
-          { year },
-          { month: { $gte: minMonth, $lte: month } },
-        ],
-      },
-    },
-    { $group: { _id: '$month', totalExpense: { $sum: '$sum' } } },
-    {
-      $project: {
-        month: { $arrayElemAt: [months, '$_id'] },
-        totalExpense: { $round: ['$totalExpense', 2] },
-      },
-    },
-    { $sort: { _id: -1 } },
-  ]);
+const getExpenseTransaction = async (id, dateQuery) => {
+  const typeOfTransaction = false;
+  const queryParams = await getQueryParams(id, dateQuery, typeOfTransaction);
+  const pipelineToExpenses = getPipeline(queryParams);
+  const expenses = await Transaction.aggregate(pipelineToExpenses);
   return expenses;
 };
 
-const getIncomeTransaction = async (id, body) => {
-  const { year, month } = body;
-  const minMonth = Math.max(0, month - 5);
-  const incomes = await Transaction.aggregate([
-    {
-      $match: {
-        $and: [
-          { owner: Types.ObjectId(id) },
-          { typeOfTransaction: true },
-          { year },
-          { month: { $gte: minMonth, $lte: month } },
-        ],
-      },
-    },
-    { $group: { _id: '$month', totalIncome: { $sum: '$sum' } } },
-    {
-      $project: {
-        month: { $arrayElemAt: [months, '$_id'] },
-        totalIncome: { $round: ['$totalIncome', 2] },
-      },
-    },
-    { $sort: { _id: -1 } },
-  ]);
+const getIncomeTransaction = async (id, dateQuery) => {
+  const typeOfTransaction = true;
+  const queryParams = await getQueryParams(id, dateQuery, typeOfTransaction);
+  const pipelineToIncomes = getPipeline(queryParams);
+  const incomes = await Transaction.aggregate(pipelineToIncomes);
   return incomes;
 };
 
