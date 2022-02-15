@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.2.0",
+    "version": "1.3.0",
     "title": "Swagger for kapusta",
     "description": "Kapusta swagger documentation",
     "license": {
@@ -412,7 +412,22 @@
       "get": {
         "tags": ["Stats"],
         "summary": "User statistics",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "year",
+            "required": true,
+            "type": "string",
+            "description": "Current year"
+          },
+          {
+            "in": "path",
+            "name": "month",
+            "required": true,
+            "type": "string",
+            "description": "Current month in calendar in app"
+          }
+        ],
         "security": [{ "Bearer": [] }],
 
         "responses": {
@@ -447,7 +462,22 @@
       "get": {
         "tags": ["Stats"],
         "summary": "User statistics",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "year",
+            "required": true,
+            "type": "string",
+            "description": "Current year"
+          },
+          {
+            "in": "path",
+            "name": "month",
+            "required": true,
+            "type": "string",
+            "description": "Current month in calendar in app"
+          }
+        ],
         "security": [{ "Bearer": [] }],
 
         "responses": {
@@ -482,7 +512,22 @@
       "get": {
         "tags": ["Stats"],
         "summary": "User statistics",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "year",
+            "required": true,
+            "type": "string",
+            "description": "Current year"
+          },
+          {
+            "in": "path",
+            "name": "month",
+            "required": true,
+            "type": "string",
+            "description": "Current month in calendar in app"
+          }
+        ],
         "security": [{ "Bearer": [] }],
 
         "responses": {
@@ -530,11 +575,6 @@
             "type": "string",
             "description": "User's password",
             "example": "qwerty123"
-          },
-          "name": {
-            "type": "string",
-            "description": "User's name",
-            "example": "John Doe"
           }
         }
       },
@@ -653,10 +693,6 @@
               "id": {
                 "type": "string",
                 "example": "61ffbac74cfa19a32e603ae1"
-              },
-              "name": {
-                "type": "string",
-                "example": "John Doe"
               },
               "email": {
                 "type": "string",
@@ -898,11 +934,7 @@
                     "sum": 50.35,
                     "date": "11.02.2022",
                     "typeOfTransaction": false,
-                    "owner": {
-                      "name": "Guest",
-                      "email": "khomaslv@gmail.com",
-                      "id": "620127666e014907c7f14946"
-                    },
+                    "owner": "620127666e014907c7f14946",
                     "year": 2022,
                     "month": 8,
                     "day": 5,
@@ -1026,6 +1058,152 @@
                 "totalIncome": 11840.41
               }
             ]
+          }
+        }
+      },
+      "DetailedResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status of request",
+            "example": "success"
+          },
+          "code": {
+            "type": "number",
+            "description": "Status of request",
+            "example": "200"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "totalExpInc": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "boolean",
+                      "description": "typeOfTransaction",
+                      "example": false
+                    },
+                    "total": {
+                      "type": "number",
+                      "description": "Total summa",
+                      "example": 2781.22
+                    }
+                  }
+                }
+              },
+              "detailedCategoryStatistic": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "typeOfTransaction": false,
+                      "category": "transport",
+                      "categoryLabel": "ТРАНСПОРТ"
+                    },
+                    "total": {
+                      "type": "number",
+                      "description": "Total summa",
+                      "example": 2345.55
+                    }
+                  }
+                }
+              },
+              "detailedDescriptionStatistic": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "typeOfTransaction": true,
+                      "description": "Жена",
+                      "category": "addIncome"
+                    },
+                    "total": {
+                      "type": "number",
+                      "description": "Total summa",
+                      "example": 2345.55
+                    }
+                  }
+                }
+              }
+            },
+            "example": {
+              "totalExpInc": [
+                {
+                  "_id": false,
+                  "total": 2781.22
+                },
+                {
+                  "_id": true,
+                  "total": 9712.52
+                }
+              ],
+              "detailedCategoryStatistic": [
+                {
+                  "_id": {
+                    "typeOfTransaction": false,
+                    "category": "transport",
+                    "categoryLabel": "ТРАНСПОРТ"
+                  },
+                  "total": 2345.55
+                },
+                {
+                  "_id": {
+                    "typeOfTransaction": true,
+                    "category": "addIncome",
+                    "categoryLabel": "Дод. дох."
+                  },
+                  "total": 9712.52
+                },
+                {
+                  "_id": {
+                    "typeOfTransaction": false,
+                    "category": "alcohol",
+                    "categoryLabel": "АЛКОГОЛЬ"
+                  },
+                  "total": 435.67
+                }
+              ],
+              "detailedDescriptionStatistic": [
+                {
+                  "_id": {
+                    "typeOfTransaction": true,
+                    "description": "Жена",
+                    "category": "addIncome"
+                  },
+                  "total": 5008
+                },
+                {
+                  "_id": {
+                    "typeOfTransaction": true,
+                    "description": "Мій",
+                    "category": "addIncome"
+                  },
+                  "total": 4704
+                },
+                {
+                  "_id": {
+                    "typeOfTransaction": false,
+                    "description": "Зап. частини",
+                    "category": "transport"
+                  },
+                  "total": 2346
+                },
+                {
+                  "_id": {
+                    "typeOfTransaction": false,
+                    "description": "Горілка",
+                    "category": "alcohol"
+                  },
+                  "total": 436
+                }
+              ]
+            }
           }
         }
       },
