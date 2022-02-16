@@ -1,8 +1,11 @@
 // import UsersRepository from '../repository/user';
 import Transaction from '../model/transaction';
+
+
 import { getQueryParams, getPipeline } from '../services/transactions';
 import mongoose from 'mongoose';
 const { Types } = mongoose;
+
 
 const transactionsList = async (userId, { limit = 50, skip = 0 }) => {
   const total = await Transaction.find({ owner: userId }).countDocuments();
@@ -30,90 +33,49 @@ const addTransaction = async (userId, body) => {
   return transaction;
 };
 
-// const updateTransaction = async userId => {
-//   // const body = await Transaction.findOne({ category: 'salary', owner: userId });
-//   const transaction = await Transaction.updateMany(
-//     { category: 'bills', owner: userId },
-//     { $set: { categoryLabel: `КОМУНАЛКА, ЗВ'ЯЗОК` } },
-//     // { new: true },
-//   );
-//   return transaction;
-// };
 
-const getExpenseTransaction = async (id, dateQuery) => {
+const updateTransaction = async userId => {
+  // const body = await Transaction.findOne({ category: 'salary', owner: userId });
+  const transaction = await Transaction.updateMany(
+    { category: 'foods', owner: userId, month: 7 },
+    { $set: { categoryLabel: `Продукти` } },
+    // { new: true },
+  );
+  return transaction;
+};
+
+const getExpenseTransaction = async (id, query) => {
   const typeOfTransaction = false;
-  const queryParams = await getQueryParams(id, dateQuery, typeOfTransaction);
-  const pipelineToExpenses = getPipeline(queryParams);
-  const expenses = await Transaction.aggregate(pipelineToExpenses);
-  return expenses;
+  const transactionsService = new TransactionsService(
+    id,
+    query,
+    Transaction,
+    typeOfTransaction,
+  );
+  return await transactionsService.statisticSummery();
+
 };
 
-const getIncomeTransaction = async (id, dateQuery) => {
+const getIncomeTransaction = async (id, query) => {
   const typeOfTransaction = true;
-  const queryParams = await getQueryParams(id, dateQuery, typeOfTransaction);
-  const pipelineToIncomes = getPipeline(queryParams);
-  const incomes = await Transaction.aggregate(pipelineToIncomes);
-  return incomes;
+  const transactionsService = new TransactionsService(
+    id,
+    query,
+    Transaction,
+    typeOfTransaction,
+  );
+
+  return await transactionsService.statisticSummery();
 };
 
-const getDetailedTransaction = async (id, body) => {
-  const { year, month } = body;
+const getDetailedTransaction = async (id, query) => {
+  const transactionsService = new TransactionsService(id, query, Transaction);
 
-  const totalExpInc = await Transaction.aggregate([
-    {
-      $match: {
-        $and: [{ owner: Types.ObjectId(id) }, { year }, { month }],
-      },
-    },
-    {
-      $group: {
-        _id: '$typeOfTransaction',
-        total: { $sum: '$sum' },
-      },
-    },
-    { $project: { total: { $round: ['$total', 2] } } },
-    { $sort: { _id: 1 } },
-  ]);
-
-  const detailedCategoryStatistic = await Transaction.aggregate([
-    {
-      $match: {
-        $and: [{ owner: Types.ObjectId(id) }, { year }, { month }],
-      },
-    },
-    {
-      $group: {
-        _id: {
-          typeOfTransaction: '$typeOfTransaction',
-          category: '$category',
-          categoryLabel: '$categoryLabel',
-        },
-        total: { $sum: '$sum' },
-      },
-    },
-    { $project: { total: { $round: ['$total', 2] } } },
-  ]);
-
-  const detailedDescriptionStatistic = await Transaction.aggregate([
-    {
-      $match: {
-        $and: [{ owner: Types.ObjectId(id) }, { year }, { month }],
-      },
-    },
-    {
-      $group: {
-        _id: {
-          typeOfTransaction: '$typeOfTransaction',
-          description: '$description',
-          category: '$category',
-        },
-        total: { $sum: '$sum' },
-      },
-    },
-    { $project: { total: { $round: ['$total', 0] } } },
-    { $sort: { total: -1 } },
-  ]);
-
+  const totalExpInc = await transactionsService.totalExpInc();
+  const detailedCategoryStatistic =
+    await transactionsService.detailedCategoryStatistic();
+  const detailedDescriptionStatistic =
+    await transactionsService.detailedDescriptionStatistic();
   return {
     totalExpInc,
     detailedCategoryStatistic,
@@ -125,7 +87,7 @@ export default {
   transactionsList,
   removeTransaction,
   addTransaction,
-  // updateTransaction,
+  updateTransaction,
   getExpenseTransaction,
   getIncomeTransaction,
   getDetailedTransaction,
