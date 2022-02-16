@@ -6,8 +6,8 @@ import queryString from 'query-string';
 import { SenderSendGrid, EmailService } from '../../services/email/index';
 import repositoryUsers from '../../repository/user';
 
-// const BASE_URL = 'https://magic8-kapusta.netlify.app';
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'https://magic8-kapusta.netlify.app';
+// const BASE_URL = 'http://localhost:3000';
 
 const registration = async (req, res, next) => {
   try {
