@@ -167,7 +167,7 @@ const getBalance = (req, res, _next) => {
 const updateBalance = async (req, res, _next) => {
   const { id: userId } = req.user;
   const { balance } = req.body;
-  // console.log(typeof balance);
+
   if (!balance) {
     return res.status(HttpCode.NOT_FOUND).json({
       status: 'error',
@@ -175,15 +175,16 @@ const updateBalance = async (req, res, _next) => {
       message: `Missing field 'balance'`,
     });
   }
-  await authService.setBalance(userId, balance);
+  const result = await authService.setBalance(userId, balance);
 
-  // if (!result) {
-  //   return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({
-  //     status: 'error',
-  //     code: HttpCode.INTERNAL_SERVER_ERROR,
-  //     message: 'Not found balance',
-  //   });
-  // }
+  if (!result) {
+    return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({
+      status: 'error',
+      code: HttpCode.INTERNAL_SERVER_ERROR,
+      message: 'Not found balance',
+    });
+  }
+
   const userBalance = await authService.getBalance(userId);
   return res
     .status(HttpCode.OK)
@@ -212,8 +213,18 @@ const verifyUser = async (req, res, _next) => {
 const repeatEmailForVerifyUser = async (req, res, _next) => {
   const { email } = req.body;
   const user = await repositoryUsers.findByEmail(email);
+
   if (user) {
-    const { name, verificationToken } = user;
+    const { name, verificationToken, isVerify } = user;
+
+    if (isVerify) {
+      return res.status(HttpCode.CONFLICT).json({
+        status: 'error',
+        code: HttpCode.CONFLICT,
+        message: 'User is verify',
+      });
+    }
+
     const emailService = new EmailService(
       process.env.NODE_ENV,
       new SenderSendGrid(),
