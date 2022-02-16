@@ -1,7 +1,7 @@
 import Transaction from '../model/transaction';
 import TransactionsService from '../services/transactions';
 
-const transactionsList = async (userId, { limit = 50, skip = 0 }) => {
+const transactionsList = async (userId, { limit = 20, skip = 0 }) => {
   const total = await Transaction.find({ owner: userId }).countDocuments();
   let transactions = Transaction.find({ owner: userId });
 
@@ -27,15 +27,15 @@ const addTransaction = async (userId, body) => {
   return transaction;
 };
 
-const updateTransaction = async userId => {
-  // const body = await Transaction.findOne({ category: 'salary', owner: userId });
-  const transaction = await Transaction.updateMany(
-    { category: 'foods', owner: userId, month: 7 },
-    { $set: { categoryLabel: `Продукти` } },
-    // { new: true },
-  );
-  return transaction;
-};
+// const updateTransaction = async userId => {
+//   // const body = await Transaction.findOne({ category: 'salary', owner: userId });
+//   const transaction = await Transaction.updateMany(
+//     { month: 1, year: 2022, owner: userId },
+//     { $set: { day: 17, date: '17.02.2022' } },
+//     // { new: true },
+//   );
+//   return transaction;
+// };
 
 const getExpenseTransaction = async (id, query) => {
   const typeOfTransaction = false;
@@ -79,7 +79,7 @@ export default {
   transactionsList,
   removeTransaction,
   addTransaction,
-  updateTransaction,
+  // updateTransaction,
   getExpenseTransaction,
   getIncomeTransaction,
   getDetailedTransaction,
