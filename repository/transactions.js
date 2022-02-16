@@ -1,5 +1,11 @@
+// import UsersRepository from '../repository/user';
 import Transaction from '../model/transaction';
-import TransactionsService from '../services/transactions';
+
+
+import { getQueryParams, getPipeline } from '../services/transactions';
+import mongoose from 'mongoose';
+const { Types } = mongoose;
+
 
 const transactionsList = async (userId, { limit = 50, skip = 0 }) => {
   const total = await Transaction.find({ owner: userId }).countDocuments();
@@ -27,6 +33,7 @@ const addTransaction = async (userId, body) => {
   return transaction;
 };
 
+
 const updateTransaction = async userId => {
   // const body = await Transaction.findOne({ category: 'salary', owner: userId });
   const transaction = await Transaction.updateMany(
@@ -46,6 +53,7 @@ const getExpenseTransaction = async (id, query) => {
     typeOfTransaction,
   );
   return await transactionsService.statisticSummery();
+
 };
 
 const getIncomeTransaction = async (id, query) => {

@@ -2,6 +2,7 @@ import months from '../../lib/months';
 import UsersRepository from '../../repository/user';
 import mongoose from 'mongoose';
 const { Types } = mongoose;
+
 class TransactionsService {
   constructor(id, queryParams, TransactionsObj, typeOfTransaction) {
     this.id = id;
@@ -120,3 +121,4 @@ class TransactionsService {
 }
 
 export default TransactionsService;
+
