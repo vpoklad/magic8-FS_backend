@@ -5,9 +5,7 @@ function date() {
   const newDate = new Date();
   const year = Number(newDate.getFullYear());
   const month = Number(newDate.getMonth());
-  // const month = Math.round(Math.random() * 11);
-  const day = Number(newDate.getDay());
-
+  const day = Number(newDate.getDate());
   return { year, month, day };
 }
 
@@ -23,7 +21,6 @@ const transactionSchema = new Schema(
     },
     categoryLabel: {
       type: String,
-      // uppercase: true,
       required: [true, 'Set categoryLabel for transaction'],
     },
     sum: {
@@ -36,7 +33,7 @@ const transactionSchema = new Schema(
     date: {
       type: String,
       default: Date.now,
-      // max: Date.now,
+      max: Date.now,
     },
     year: { type: Number, default: () => date().year },
     month: { type: Number, default: () => date().month },
