@@ -60,7 +60,13 @@
           },
           "400": {
             "description": "Bad request (invalid request body)",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
           },
           "409": {
             "description": "Email is already exist",
@@ -98,7 +104,13 @@
           },
           "400": {
             "description": "Bad request (invalid request body)",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
           },
           "401": {
             "description": "Invalid credentials",
@@ -140,7 +152,13 @@
           },
           "400": {
             "description": "Bad request (invalid request body)",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
           }
         }
       }
@@ -166,6 +184,16 @@
               }
             }
           },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Not authorized",
             "content": {
@@ -175,10 +203,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
           }
         }
       }
@@ -211,7 +235,13 @@
 
           "400": {
             "description": "Bad request (invalid request body)",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
           }
         }
       },
@@ -243,7 +273,13 @@
           },
           "400": {
             "description": "Bad request (invalid request body)",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
           },
           "503": {
             "description": "Successful operation",
@@ -315,6 +351,16 @@
               }
             }
           },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Not authorized",
             "content": {
@@ -324,10 +370,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
           }
         }
       }
@@ -362,7 +404,13 @@
           },
           "400": {
             "description": "Bad request (invalid request body)",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
           },
           "401": {
             "description": "Not authorized",
@@ -390,6 +438,16 @@
               }
             }
           },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Not authorized",
             "content": {
@@ -399,10 +457,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
           }
         }
       }
@@ -441,6 +495,16 @@
               }
             }
           },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Not authorized",
             "content": {
@@ -451,9 +515,15 @@
               }
             }
           },
-          "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
+          "404": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
           }
         }
       }
@@ -491,6 +561,16 @@
               }
             }
           },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Not authorized",
             "content": {
@@ -501,9 +581,15 @@
               }
             }
           },
-          "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
+          "404": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
           }
         }
       }
@@ -541,6 +627,16 @@
               }
             }
           },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Not authorized",
             "content": {
@@ -551,9 +647,15 @@
               }
             }
           },
-          "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
+          "404": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
           }
         }
       }
@@ -793,12 +895,6 @@
                 "type": "string",
                 "example": "user@example.com",
                 "format": "email"
-              },
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "example": "John Doe"
-                }
               }
             }
           }
@@ -1208,28 +1304,6 @@
         }
       },
 
-      "NotAuthorized": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "stribg",
-            "description": "Status of request",
-            "example": "success"
-          },
-          "code": {
-            "type": "number",
-            "description": "Status of request"
-          },
-          "data": {
-            "type": "object"
-          }
-        },
-        "example": {
-          "status": "error",
-          "code": 409,
-          "message": "Not authorized"
-        }
-      },
       "successOperationResponse": {
         "type": "object",
         "properties": {
@@ -1254,6 +1328,74 @@
           }
         }
       },
+
+      "BadRequest": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status of request",
+            "example": "success"
+          },
+          "code": {
+            "type": "number",
+            "description": "Status of request"
+          },
+          "data": {
+            "type": "object"
+          }
+        },
+        "example": {
+          "status": "error",
+          "code": 400,
+          "message": "Field has bin required"
+        }
+      },
+      "NotAuthorized": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status of request",
+            "example": "success"
+          },
+          "code": {
+            "type": "number",
+            "description": "Status of request"
+          },
+          "data": {
+            "type": "object"
+          }
+        },
+        "example": {
+          "status": "error",
+          "code": 401,
+          "message": "Not authorized"
+        }
+      },
+      "NotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status of request",
+            "example": "success"
+          },
+          "code": {
+            "type": "number",
+            "description": "Status of request"
+          },
+          "data": {
+            "type": "object"
+          }
+        },
+        "example": {
+          "status": "error",
+          "code": 404,
+          "message": "Not found"
+        }
+      },
+
       "ServiceUnavailable": {
         "type": "object",
         "properties": {
