@@ -7,9 +7,9 @@ const addTransactionSchema = Joi.object({
   category: Joi.string().required(),
   sum: Joi.number().precision(2).required(),
   date: Joi.string().required(),
-  year: Joi.number().optional(),
-  month: Joi.number().optional(),
-  day: Joi.number().optional(),
+  year: Joi.number().required(),
+  month: Joi.number().required(),
+  day: Joi.number().required(),
   typeOfTransaction: Joi.bool().required(),
   categoryLabel: Joi.string().required(),
 });
