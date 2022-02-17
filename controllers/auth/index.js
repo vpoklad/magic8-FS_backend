@@ -7,7 +7,6 @@ import { SenderSendGrid, EmailService } from '../../services/email/index';
 import repositoryUsers from '../../repository/user';
 
 const BASE_URL = 'https://magic8-kapusta.netlify.app';
-// const BASE_URL = 'http://localhost:3000';
 
 const registration = async (req, res, next) => {
   try {
@@ -74,7 +73,7 @@ const googleAuth = async (req, res) => {
     client_id: process.env.GOOGLE_CLIENT_ID,
     redirect_uri:
       'https://kapusta-magic8.herokuapp.com/api/users/google-redirect',
-    // 'http://localhost:5000/api/users/google-redirect',
+
     scope: [
       'https://www.googleapis.com/auth/userinfo.email',
       'https://www.googleapis.com/auth/userinfo.profile',
@@ -101,7 +100,7 @@ const googleRedirect = async (req, res) => {
       client_secret: process.env.GOOGLE_CLIENT_SECRET,
       redirect_uri:
         'https://kapusta-magic8.herokuapp.com/api/users/google-redirect',
-      // 'http://localhost:5000/api/users/google-redirect',
+
       grant_type: 'authorization_code',
       code,
     },
@@ -125,7 +124,6 @@ const googleRedirect = async (req, res) => {
     await authService.setToken(createdUser.id, accessToken);
     await repositoryUsers.updateVerification(createdUser.id, true);
     return res.redirect(
-      // `https://magic8-kapusta.netlify.app/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}&balance=${createdUser.balance}`,
       `${BASE_URL}/google?email=${userData.data.email}&avatarURL=${userData.data.picture}&token=${accessToken}&balance=${createdUser.balance}`,
     );
   }
@@ -134,7 +132,6 @@ const googleRedirect = async (req, res) => {
   await authService.setToken(userInDB.id, accessToken);
 
   return res.redirect(
-    // `https://magic8-kapusta.netlify.app/google?email=${userInDB.email}&avatarURL=${userInDB.avatarURL}&token=${accessToken}&balance=${userInDB.balance}`,
     `${BASE_URL}/google?email=${userInDB.email}&avatarURL=${userInDB.avatarURL}&token=${accessToken}&balance=${userInDB.balance}`,
   );
 };
