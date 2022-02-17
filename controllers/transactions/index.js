@@ -59,11 +59,12 @@ const createTransaction = async (req, res, next) => {
   res.status(HttpCode.CREATED).json({
     status: 'success',
     code: HttpCode.OK,
+    message: 'transaction created successful',
     data: { balance: newBalance, total, transactions },
   });
 };
 
-const removeTransaction = async (req, res, next) => {
+const removeTransaction = async (req, res, _next) => {
   const { id } = req.params;
   const { id: userId } = req.user;
   const transaction = await repositoryTransactions.removeTransaction(
@@ -84,10 +85,18 @@ const removeTransaction = async (req, res, next) => {
     ? await AuthService.setBalance(userId, balance + sumOfTransaction)
     : await AuthService.setBalance(userId, balance - sumOfTransaction);
 
+  const newBalance = await AuthService.getBalance(userId);
+
+  const { total, transactions } = await repositoryTransactions.transactionsList(
+    userId,
+    req.query,
+  );
+
   res.status(HttpCode.OK).json({
     status: 'success',
     code: HttpCode.OK,
     message: 'transaction deleted',
+    data: { balance: newBalance, total, transactions },
   });
 };
 
