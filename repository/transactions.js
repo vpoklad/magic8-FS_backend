@@ -5,7 +5,7 @@ const transactionsList = async (userId, { limit = 50, skip = 0 }) => {
   const total = await Transaction.find({ owner: userId }).countDocuments();
   let transactions = Transaction.find({ owner: userId });
 
-  const sortCriteria = { year: -1, month: -1, day: -1 };
+  const sortCriteria = { year: -1, month: -1, day: -1, createdAt: -1 };
 
   transactions = await transactions
     .skip(Number(skip))
@@ -64,10 +64,8 @@ const getDetailedTransaction = async (id, query) => {
   const transactionsService = new TransactionsService(id, query, Transaction);
 
   const totalExpInc = await transactionsService.totalExpInc();
-  const detailedCategoryStatistic =
-    await transactionsService.detailedCategoryStatistic();
-  const detailedDescriptionStatistic =
-    await transactionsService.detailedDescriptionStatistic();
+  const detailedCategoryStatistic = await transactionsService.detailedCategoryStatistic();
+  const detailedDescriptionStatistic = await transactionsService.detailedDescriptionStatistic();
   return {
     totalExpInc,
     detailedCategoryStatistic,
