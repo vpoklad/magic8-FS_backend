@@ -1,7 +1,7 @@
 import Transaction from '../model/transaction';
 import TransactionsService from '../services/transactions';
 
-const transactionsList = async (userId, { limit = 50, skip = 0 }) => {
+const transactionsList = async (userId, { limit = 20, skip = 0 }) => {
   const total = await Transaction.find({ owner: userId }).countDocuments();
   let transactions = Transaction.find({ owner: userId });
 
@@ -24,16 +24,6 @@ const removeTransaction = async (userId, transactionId) => {
 
 const addTransaction = async (userId, body) => {
   const transaction = await Transaction.create({ ...body, owner: userId });
-  return transaction;
-};
-
-const updateTransaction = async userId => {
-  // const body = await Transaction.findOne({ category: 'salary', owner: userId });
-  const transaction = await Transaction.updateMany(
-    { category: 'foods', owner: userId, month: 7 },
-    { $set: { categoryLabel: `Продукти` } },
-    // { new: true },
-  );
   return transaction;
 };
 
@@ -64,8 +54,10 @@ const getDetailedTransaction = async (id, query) => {
   const transactionsService = new TransactionsService(id, query, Transaction);
 
   const totalExpInc = await transactionsService.totalExpInc();
-  const detailedCategoryStatistic = await transactionsService.detailedCategoryStatistic();
-  const detailedDescriptionStatistic = await transactionsService.detailedDescriptionStatistic();
+  const detailedCategoryStatistic =
+    await transactionsService.detailedCategoryStatistic();
+  const detailedDescriptionStatistic =
+    await transactionsService.detailedDescriptionStatistic();
   return {
     totalExpInc,
     detailedCategoryStatistic,
@@ -77,7 +69,6 @@ export default {
   transactionsList,
   removeTransaction,
   addTransaction,
-  updateTransaction,
   getExpenseTransaction,
   getIncomeTransaction,
   getDetailedTransaction,
