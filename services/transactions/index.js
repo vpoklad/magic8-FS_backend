@@ -91,6 +91,7 @@ class TransactionsService {
         },
       },
       { $project: { total: { $round: ['$total', 2] } } },
+      { $sort: { total: -1 } },
     ]);
     return result;
   }
